@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # Production Service (Optimized Nginx + Assets)
+  # ==========================================
+  sentinel-ai:
+    container_name: sentinel-ai-agent
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+      - "8080:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+
+  # ==========================================
+  # Development Service (Live HMR with Code Mount)
+  # Run with: docker compose --profile dev up
+  # ==========================================
+  sentinel-ai-dev:
+    container_name: sentinel-ai-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    profiles: ["dev"]
+    ports:
+      - "5174:5173"
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./index.html:/app/index.html
+      - /app/node_modules
+    restart: unless-stopped
+    environment:
+      - CHOKIDAR_USEPOLLING=true

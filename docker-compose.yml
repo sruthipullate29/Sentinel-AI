@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  # ── Vectorize Hindsight (local memory engine) ─────────────────────────────
+  hindsight:
+    image: vectorize/hindsight:latest
+    container_name: sentinelai-hindsight
+    ports:
+      - "8888:8888"
+    volumes:
+      - hindsight_data:/data
+    environment:
+      - HINDSIGHT_STORAGE_PATH=/data
+    restart: unless-stopped
+
+  # ── SentinelAI Backend ────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sentinelai-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - HINDSIGHT_API_URL=http://hindsight:8888
+      - HINDSIGHT_BANK_ID=sentinelai-local
+    env_file:
+      - .env
+    depends_on:
+      - hindsight
+    restart: unless-stopped
+    # Note: to monitor the HOST machine the backend must run on host network
+    # or use host.docker.internal for psutil. For development, run directly.
+
+volumes:
+  hindsight_data:
+    driver: local

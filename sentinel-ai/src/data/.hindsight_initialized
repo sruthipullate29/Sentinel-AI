@@ -1,0 +1,7 @@
+{
+  "initializedAt": "2026-09-29T05:47:20.727Z",
+  "status": "ACTIVE",
+  "indexedIncidents": 4,
+  "vectorEngine": "SentinelAI-Embeddings-v2",
+  "dimension": 384
+}

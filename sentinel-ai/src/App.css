@@ -1,0 +1,833 @@
+/* SentinelAI Core Component Styles - RiteFlow Aesthetic */
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-dark);
+}
+
+/* Header Styles */
+.header-wrapper {
+  background: rgba(8, 9, 24, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 0.85rem 2rem;
+}
+
+.header-content {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.brand-logo-icon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.brand-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, #ffffff, #c4b5fd);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.nav-tabs {
+  display: flex;
+  align-items: center;
+  background: rgba(13, 15, 36, 0.8);
+  padding: 4px;
+  border-radius: 9999px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.nav-tab-btn {
+  padding: 7px 16px;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.nav-tab-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-tab-btn.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-pill-cta {
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 7px 18px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  box-shadow: 0 0 18px rgba(124, 58, 237, 0.45);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.header-pill-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.65);
+  background: linear-gradient(135deg, #818cf8, #8b5cf6);
+}
+
+/* Loop Tracker Bar */
+.learning-loop-bar {
+  background: rgba(10, 11, 28, 0.6);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0.75rem 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.learning-loop-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow-x: auto;
+  gap: 0.5rem;
+}
+
+.loop-step-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.loop-step-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(139, 92, 246, 0.2);
+}
+
+.loop-step-item.active {
+  background: rgba(124, 58, 237, 0.16);
+  border-color: #8b5cf6;
+  box-shadow: 0 0 16px rgba(124, 58, 237, 0.35);
+  animation: activeStepPulse 2.5s infinite;
+}
+
+.loop-step-item.active-violet {
+  background: rgba(99, 102, 241, 0.16);
+  border-color: #818cf8;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.35);
+}
+
+.step-number {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+}
+
+.loop-step-item.active .step-number {
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: #fff;
+}
+
+.loop-arrow {
+  color: var(--text-subtle);
+  font-size: 0.85rem;
+  opacity: 0.5;
+}
+
+/* Main Dashboard Body */
+.dashboard-main {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 1.75rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* Scenario Injector Strip */
+.scenario-strip {
+  background: rgba(13, 15, 36, 0.9);
+  border: 1px solid rgba(139, 92, 246, 0.22);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.scenario-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.scenario-pill-btn {
+  padding: 7px 15px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+}
+
+.scenario-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.scenario-pill-btn.active {
+  background: rgba(244, 63, 94, 0.16);
+  border-color: rgba(244, 63, 94, 0.45);
+  color: var(--rose-bright);
+}
+
+.scenario-pill-btn.active-normal {
+  background: rgba(124, 58, 237, 0.16);
+  border-color: #8b5cf6;
+  color: #c4b5fd;
+  box-shadow: 0 0 16px rgba(124, 58, 237, 0.35);
+}
+
+/* ============================================================
+   RITEFLOW HERO SECTION
+   ============================================================ */
+.riteflow-hero {
+  text-align: center;
+  padding: 4.5rem 1.5rem 2.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+
+.hero-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 9999px;
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  color: #ddd6fe;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.hero-main-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.12;
+  color: #ffffff;
+  letter-spacing: -0.035em;
+  margin: 0 auto;
+}
+
+.hero-brand-serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.16em;
+  background: linear-gradient(135deg, #ffffff 15%, #ddd6fe 55%, #818cf8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding-right: 6px;
+}
+
+.hero-subtext {
+  font-size: 1.05rem;
+  color: #94a3b8;
+  max-width: 660px;
+  margin: 1.35rem auto 2.25rem;
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.hero-cta-primary {
+  background: #ffffff;
+  color: #070714;
+  font-weight: 700;
+  padding: 12px 30px;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.35), 0 4px 15px rgba(0, 0, 0, 0.6);
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.hero-cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.55);
+  background: #f8fafc;
+}
+
+.hero-cta-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 12px 26px;
+  border-radius: 9999px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(167, 139, 250, 0.5);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   ELEVATED MAC OS WINDOW FRAME MOCKUP
+   ============================================================ */
+.mac-window-container {
+  max-width: 1360px;
+  width: 100%;
+  margin: 1.5rem auto 3.5rem;
+  position: relative;
+}
+
+.mac-window-glow {
+  position: absolute;
+  inset: -35px;
+  background: radial-gradient(circle at 50% 12%, rgba(124, 58, 237, 0.45), rgba(99, 102, 241, 0.18) 55%, transparent 75%);
+  filter: blur(55px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mac-window-frame {
+  position: relative;
+  z-index: 2;
+  background: #0b0d21;
+  border: 1px solid rgba(139, 92, 246, 0.28);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.9), 0 0 45px rgba(124, 58, 237, 0.2);
+}
+
+.mac-window-header {
+  background: #08091a;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.16);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mac-traffic-lights {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.mac-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.mac-dot-red {
+  background: #ff5f56;
+  box-shadow: 0 0 6px rgba(255, 95, 86, 0.6);
+}
+
+.mac-dot-yellow {
+  background: #ffbd2e;
+  box-shadow: 0 0 6px rgba(255, 189, 46, 0.6);
+}
+
+.mac-dot-green {
+  background: #27c93f;
+  box-shadow: 0 0 6px rgba(39, 201, 63, 0.6);
+}
+
+.mac-address-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  padding: 4px 18px;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-family: var(--font-mono);
+}
+
+.mac-window-content {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dash-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dash-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.dash-date {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  font-family: var(--font-mono);
+}
+
+/* ============================================================
+   TELEMETRY GRID & RITEFLOW-STYLE CARDS
+   ============================================================ */
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+
+.metric-card {
+  padding: 1.35rem;
+  position: relative;
+  overflow: hidden;
+  background: #0d0f26;
+  border: 1px solid rgba(139, 92, 246, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(167, 139, 250, 0.35);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 25px rgba(124, 58, 237, 0.18);
+}
+
+.metric-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.metric-title {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.metric-value-display {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.metric-number {
+  font-size: 2.25rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.metric-unit {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  font-family: var(--font-mono);
+}
+
+.metric-progress-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.metric-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #6366f1, #a855f7);
+  transition: width 0.5s ease-out, background-color 0.3s ease;
+}
+
+.metric-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+}
+
+.sparkline-svg {
+  width: 100%;
+  height: 42px;
+  overflow: visible;
+  margin-top: 4px;
+}
+
+/* Prediction Banner / Anomaly Callout */
+.prediction-alert-banner {
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.14), rgba(13, 15, 38, 0.95));
+  border: 1px solid rgba(244, 63, 94, 0.45);
+  border-radius: 16px;
+  padding: 1.35rem 1.5rem;
+  box-shadow: 0 0 35px -5px rgba(244, 63, 94, 0.25);
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hindsight-match-box {
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+}
+
+/* Action button styles - RiteFlow electric pill */
+.btn-primary-action {
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  box-shadow: 0 4px 18px rgba(124, 58, 237, 0.4);
+  border: 1px solid rgba(167, 139, 250, 0.35);
+}
+
+.btn-primary-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 26px rgba(124, 58, 237, 0.6);
+  background: linear-gradient(135deg, #818cf8, #8b5cf6);
+}
+
+.btn-secondary-action {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+}
+
+.btn-secondary-action:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(167, 139, 250, 0.45);
+  color: #ffffff;
+}
+
+/* Process Inspector Table */
+.process-table-container {
+  overflow-x: auto;
+}
+
+.process-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.84rem;
+}
+
+.process-table th {
+  padding: 10px 14px;
+  color: var(--text-subtle);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.process-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.process-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.process-table tr.culprit-row td {
+  background: rgba(244, 63, 94, 0.07);
+}
+
+/* Execution Terminal Simulation */
+.terminal-box {
+  background: #050614;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 10px;
+  padding: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #38bdf8;
+  max-height: 220px;
+  overflow-y: auto;
+  line-height: 1.6;
+}
+
+.terminal-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Modal overlay */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 4, 12, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-card {
+  background: #0d0f26;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 680px;
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.8), 0 0 35px rgba(124, 58, 237, 0.2);
+  overflow: hidden;
+  animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+
+/* Cybernetic Scanline Screen Overlay */
+.cyber-scanline-screen {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg,
+      rgba(255, 0, 0, 0.03),
+      rgba(0, 255, 0, 0.01),
+      rgba(0, 0, 255, 0.03));
+  background-size: 100% 3px, 6px 100%;
+  opacity: 0.6;
+}
+
+.scanline-active {
+  text-shadow: 0 0 1px rgba(139, 92, 246, 0.4);
+}
+
+/* Audio active pulse */
+.btn-secondary-action.audio-active {
+  background: rgba(124, 58, 237, 0.16);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.25);
+}
+
+/* Utility spin */
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Custom interactive pulse dot */
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px currentColor;
+  animation: pulseDotAnim 2s infinite ease-in-out;
+}
+
+@keyframes pulseDotAnim {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+/* Dynamic cursor hover spotlight reflection on cards - SOFT LOW-INTENSITY WHITE */
+.glass-panel {
+  position: relative;
+}
+
+.glass-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(350px circle at var(--cursor-x, -500px) var(--cursor-y, -500px),
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.015),
+      transparent 65%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 1;
+}
+
+.glass-panel:hover::after {
+  opacity: 1;
+}
