@@ -7,61 +7,139 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 function Test-CommandExists {
     param ([string]$cmd)
-    return (Get-Command $cmd -ErrorAction SilentlyContinue) -ne $null
+    return [bool](Get-Command -Name $cmd -ErrorAction SilentlyContinue)
 }
 
 function Show-Status {
-    Write-Host "SentinelAI Status" -ForegroundColor Cyan
+    Write-Host "`nSentinelAI Status" -ForegroundColor Cyan
     Write-Host "-----------------" -ForegroundColor Cyan
     
     $dockerExists = Test-CommandExists "docker"
     $dockerRunning = $false
+    
     if ($dockerExists) {
-        $dockerRunning = (docker info 2>$null) -ne $null
-        if ($dockerRunning) { Write-Host "[OK] Docker Daemon" -ForegroundColor Green } else { Write-Host "[X] Docker Daemon (Not running)" -ForegroundColor Yellow }
+        try {
+            & docker info >$null 2>&1
+            $dockerRunning = ($LASTEXITCODE -eq 0)
+        } catch {
+            $dockerRunning = $false
+        }
         
-        $hindsightContainer = (docker ps -q -f name=sentinelai-hindsight 2>$null)
-        if ($hindsightContainer) { Write-Host "[OK] Hindsight Container" -ForegroundColor Green } else { Write-Host "[X] Hindsight Container" -ForegroundColor Yellow }
+        if ($dockerRunning) {
+            Write-Host "[OK] Docker Daemon (Running)" -ForegroundColor Green
+            $hindsightContainer = & docker ps -q -f "name=sentinelai-hindsight" 2>$null
+            if ($hindsightContainer) {
+                Write-Host "[OK] Hindsight Container" -ForegroundColor Green
+            } else {
+                Write-Host "[!] Hindsight Container (Not started)" -ForegroundColor Yellow
+            }
+        } else {
+            Write-Host "[!] Docker Daemon (Installed but not running)" -ForegroundColor Yellow
+        }
     } else {
-        Write-Host "[X] Docker CLI (Not installed / In-memory fallback active)" -ForegroundColor Yellow
+        Write-Host "[-] Docker CLI (Not installed - using in-memory mode)" -ForegroundColor DarkGray
     }
     
-    try {
-        $hsRes = Invoke-RestMethod -Uri "http://localhost:8888/health" -Method Get -TimeoutSec 2 -ErrorAction Stop
-        Write-Host "[OK] Hindsight API" -ForegroundColor Green
-    } catch {
-        Write-Host "[-] Hindsight API (Using in-memory telemetry / storage)" -ForegroundColor DarkGray
+    # Check Hindsight Port before making HTTP call to avoid timeouts
+    $hindsightPort = [bool](Get-NetTCPConnection -LocalPort 8888 -State Listen -ErrorAction SilentlyContinue)
+    if ($hindsightPort) {
+        try {
+            $hsRes = Invoke-RestMethod -Uri "http://localhost:8888/health" -Method Get -TimeoutSec 2 -ErrorAction Stop
+            Write-Host "[OK] Hindsight API (Port 8888)" -ForegroundColor Green
+        } catch {
+            Write-Host "[!] Hindsight API (Port 8888 open, health endpoint error)" -ForegroundColor Yellow
+        }
+    } else {
+        Write-Host "[-] Hindsight API (Not active - in-memory telemetry fallback)" -ForegroundColor DarkGray
     }
 
-    $backendPort = Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue
-    if ($backendPort) { Write-Host "[OK] Backend Service (Port 8000)" -ForegroundColor Green } else { Write-Host "[X] Backend Service (Port 8000)" -ForegroundColor Red }
+    $backendPort = [bool](Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue)
+    if ($backendPort) { 
+        Write-Host "[OK] Backend Service (Port 8000)" -ForegroundColor Green 
+    } else { 
+        Write-Host "[X] Backend Service (Port 8000)" -ForegroundColor Red 
+    }
 
-    $frontendPort = Get-NetTCPConnection -LocalPort 5173 -State Listen -ErrorAction SilentlyContinue
-    if ($frontendPort) { Write-Host "[OK] Frontend Service (Port 5173)" -ForegroundColor Green } else { Write-Host "[X] Frontend Service (Port 5173)" -ForegroundColor Red }
+    $frontendPort = [bool](Get-NetTCPConnection -LocalPort 5173 -State Listen -ErrorAction SilentlyContinue)
+    if ($frontendPort) { 
+        Write-Host "[OK] Frontend Service (Port 5173)" -ForegroundColor Green 
+    } else { 
+        Write-Host "[X] Frontend Service (Port 5173)" -ForegroundColor Red 
+    }
 
     Write-Host ""
     Write-Host "Dashboard: http://localhost:5173" -ForegroundColor Blue
     Write-Host "API:       http://localhost:8000" -ForegroundColor Blue
+    if ($hindsightPort) {
+        Write-Host "Hindsight: http://localhost:8888" -ForegroundColor Blue
+    }
+    Write-Host ""
 }
 
 function Run-Doctor {
-    Write-Host "SentinelAI Doctor" -ForegroundColor Cyan
+    param ([switch]$IncludeStatus = $true)
+    
+    Write-Host "`nSentinelAI Doctor" -ForegroundColor Cyan
     Write-Host "-----------------" -ForegroundColor Cyan
     
-    if (-not (Test-CommandExists "docker")) { Write-Host "[!] Docker CLI is missing (Optional: Hindsight container)." -ForegroundColor Yellow } else { Write-Host "[OK] Docker CLI found." -ForegroundColor Green }
-    if (-not (Test-CommandExists "python")) { Write-Host "[X] Python is missing. Install Python 3.9+." -ForegroundColor Red } else { Write-Host "[OK] Python found." -ForegroundColor Green }
-    if (-not (Test-CommandExists "npm")) { Write-Host "[X] npm is missing. Install Node.js." -ForegroundColor Red } else { Write-Host "[OK] npm found." -ForegroundColor Green }
+    $hasErrors = $false
     
+    # 1. Check Docker
+    if (Test-CommandExists "docker") {
+        Write-Host "[OK] Docker CLI found." -ForegroundColor Green
+    } else {
+        Write-Host "[!] Docker CLI not found (Optional: Hindsight vector memory)." -ForegroundColor Yellow
+    }
+    
+    # 2. Check Python
+    if (Test-CommandExists "python") {
+        $pyVersion = (& python --version 2>&1)
+        Write-Host "[OK] Python found ($pyVersion)." -ForegroundColor Green
+    } else {
+        Write-Host "[X] Python is missing. Install Python 3.9+." -ForegroundColor Red
+        $hasErrors = $true
+    }
+    
+    # 3. Check Node/npm
+    if (Test-CommandExists "npm") {
+        $nodeVersion = (& node --version 2>&1)
+        Write-Host "[OK] Node.js and npm found ($nodeVersion)." -ForegroundColor Green
+    } else {
+        Write-Host "[X] Node.js / npm is missing. Install Node.js (v18+ recommended)." -ForegroundColor Red
+        $hasErrors = $true
+    }
+    
+    # 4. Check Environment File
     if (-not (Test-Path "$ScriptDir\.env")) {
         if (Test-Path "$ScriptDir\.env.example") {
-            Write-Host "[!] .env file missing. Created from .env.example." -ForegroundColor Yellow
+            Write-Host "[!] .env file missing. Created automatically from .env.example." -ForegroundColor Yellow
             Copy-Item "$ScriptDir\.env.example" "$ScriptDir\.env"
         }
     } else {
-        Write-Host "[OK] .env file found." -ForegroundColor Green
+        Write-Host "[OK] .env configuration file present." -ForegroundColor Green
     }
     
-    Show-Status
+    # 5. Check Python Virtual Environment
+    $pythonVenv = "$ScriptDir\backend\venv"
+    if (Test-Path $pythonVenv) {
+        Write-Host "[OK] Backend virtual environment found." -ForegroundColor Green
+    } else {
+        Write-Host "[!] Backend virtual environment not initialized (will auto-create on start)." -ForegroundColor Yellow
+    }
+    
+    # 6. Check Frontend node_modules
+    $frontendModules = "$ScriptDir\sentinel-ai\node_modules"
+    if (Test-Path $frontendModules) {
+        Write-Host "[OK] Frontend node_modules present." -ForegroundColor Green
+    } else {
+        Write-Host "[!] Frontend dependencies not installed (will auto-install on start)." -ForegroundColor Yellow
+    }
+
+    if ($IncludeStatus) {
+        Show-Status
+    }
+    
+    return -not $hasErrors
 }
 
 function Stop-Services {
@@ -71,12 +149,18 @@ function Stop-Services {
         docker compose down 2>$null
     }
     
-    $backendProcs = Get-WmiObject Win32_Process | Where-Object { $_.CommandLine -match "uvicorn" -or $_.CommandLine -match "8000" }
+    # Stop backend processes
+    $backendProcs = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { 
+        $_.CommandLine -match "uvicorn" -or ($_.CommandLine -match "main:app" -and $_.ProcessName -match "python")
+    }
     foreach ($proc in $backendProcs) {
         Stop-Process -Id $proc.ProcessId -Force -ErrorAction SilentlyContinue
     }
     
-    $frontendProcs = Get-WmiObject Win32_Process | Where-Object { $_.CommandLine -match "vite" -and $_.ProcessName -match "node" }
+    # Stop frontend processes
+    $frontendProcs = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { 
+        $_.CommandLine -match "vite" -and $_.ProcessName -match "node" 
+    }
     foreach ($proc in $frontendProcs) {
         Stop-Process -Id $proc.ProcessId -Force -ErrorAction SilentlyContinue
     }
@@ -87,39 +171,62 @@ function Stop-Services {
 function Start-Services {
     Write-Host "Starting SentinelAI..." -ForegroundColor Cyan
     
-    Run-Doctor
+    $doctorPassed = Run-Doctor -IncludeStatus:$false
+    if (-not $doctorPassed) {
+        Write-Host "`n[ERROR] Missing core prerequisites. Please install required software above." -ForegroundColor Red
+        return
+    }
     
     if (Test-CommandExists "docker") {
-        Write-Host "Starting Docker services..."
-        docker compose up -d 2>$null
+        try {
+            & docker info >$null 2>&1
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "Starting Docker services (Hindsight)..."
+                docker compose up -d 2>$null
+            } else {
+                Write-Host "Docker daemon is not running. Proceeding with in-memory mode..." -ForegroundColor Yellow
+            }
+        } catch {
+            Write-Host "Skipping Docker services..." -ForegroundColor Yellow
+        }
     } else {
-        Write-Host "Skipping Docker services (Docker not found)..." -ForegroundColor Yellow
+        Write-Host "Docker not found. In-memory mode active..." -ForegroundColor Yellow
     }
 
-    Write-Host "Starting Backend..."
+    Write-Host "Starting Backend Service..."
     $pythonExe = "$ScriptDir\backend\venv\Scripts\python.exe"
     $uvicornExe = "$ScriptDir\backend\venv\Scripts\uvicorn.exe"
     
-    if (-not (Test-Path $pythonExe)) {
-        Write-Host "Creating Python virtual environment..."
+    if (-not (Test-Path $uvicornExe)) {
+        Write-Host "Initializing Python virtual environment..."
         python -m venv "$ScriptDir\backend\venv"
         & "$pythonExe" -m pip install -r "$ScriptDir\backend\requirements.txt"
     }
     
-    $StartBackend = "Set-Location -Path '$ScriptDir\backend'; & '$uvicornExe' main:app --host 0.0.0.0 --port 8000"
-    Start-Process powershell -ArgumentList "-NoExit", "-Command", $StartBackend -WindowStyle Minimized
+    $backendPort = [bool](Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue)
+    if (-not $backendPort) {
+        $StartBackend = "Set-Location -Path '$ScriptDir\backend'; & '$uvicornExe' main:app --host 0.0.0.0 --port 8000"
+        Start-Process powershell -ArgumentList "-NoExit", "-Command", $StartBackend -WindowStyle Minimized
+    } else {
+        Write-Host "Backend already running on port 8000." -ForegroundColor Green
+    }
 
-    Write-Host "Starting Frontend..."
+    Write-Host "Starting Frontend Service..."
     if (-not (Test-Path "$ScriptDir\sentinel-ai\node_modules")) {
         Write-Host "Installing Frontend dependencies..."
         Start-Process powershell -ArgumentList "-Command", "Set-Location -Path '$ScriptDir\sentinel-ai'; npm install" -Wait
     }
     
-    $StartFrontend = "Set-Location -Path '$ScriptDir\sentinel-ai'; npm run dev"
-    Start-Process powershell -ArgumentList "-NoExit", "-Command", $StartFrontend -WindowStyle Minimized
+    $frontendPort = [bool](Get-NetTCPConnection -LocalPort 5173 -State Listen -ErrorAction SilentlyContinue)
+    if (-not $frontendPort) {
+        $StartFrontend = "Set-Location -Path '$ScriptDir\sentinel-ai'; npm run dev"
+        Start-Process powershell -ArgumentList "-NoExit", "-Command", $StartFrontend -WindowStyle Minimized
+    } else {
+        Write-Host "Frontend already running on port 5173." -ForegroundColor Green
+    }
 
     Write-Host "Waiting for services to become ready..."
-    Start-Sleep -Seconds 5
+    Start-Sleep -Seconds 3
     
     Show-Status
 }
