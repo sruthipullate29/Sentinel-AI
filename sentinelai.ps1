@@ -1,5 +1,5 @@
 param (
-    [Parameter(Mandatory=$false, Position=0)]
+    [Parameter(Mandatory = $false, Position = 0)]
     [string]$Command = "start"
 )
 
@@ -21,7 +21,8 @@ function Show-Status {
         try {
             & docker info >$null 2>&1
             $dockerRunning = ($LASTEXITCODE -eq 0)
-        } catch {
+        }
+        catch {
             $dockerRunning = $false
         }
         
@@ -30,13 +31,16 @@ function Show-Status {
             $hindsightContainer = & docker ps -q -f "name=sentinelai-hindsight" 2>$null
             if ($hindsightContainer) {
                 Write-Host "[OK] Hindsight Container" -ForegroundColor Green
-            } else {
+            }
+            else {
                 Write-Host "[!] Hindsight Container (Not started)" -ForegroundColor Yellow
             }
-        } else {
+        }
+        else {
             Write-Host "[!] Docker Daemon (Installed but not running)" -ForegroundColor Yellow
         }
-    } else {
+    }
+    else {
         Write-Host "[-] Docker CLI (Not installed - using in-memory mode)" -ForegroundColor DarkGray
     }
     
@@ -44,26 +48,30 @@ function Show-Status {
     $hindsightPort = [bool](Get-NetTCPConnection -LocalPort 8888 -State Listen -ErrorAction SilentlyContinue)
     if ($hindsightPort) {
         try {
-            $hsRes = Invoke-RestMethod -Uri "http://localhost:8888/health" -Method Get -TimeoutSec 2 -ErrorAction Stop
+            $null = Invoke-RestMethod -Uri "http://localhost:8888/health" -Method Get -TimeoutSec 2 -ErrorAction Stop
             Write-Host "[OK] Hindsight API (Port 8888)" -ForegroundColor Green
-        } catch {
+        }
+        catch {
             Write-Host "[!] Hindsight API (Port 8888 open, health endpoint error)" -ForegroundColor Yellow
         }
-    } else {
+    }
+    else {
         Write-Host "[-] Hindsight API (Not active - in-memory telemetry fallback)" -ForegroundColor DarkGray
     }
 
     $backendPort = [bool](Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue)
     if ($backendPort) { 
         Write-Host "[OK] Backend Service (Port 8000)" -ForegroundColor Green 
-    } else { 
+    }
+    else { 
         Write-Host "[X] Backend Service (Port 8000)" -ForegroundColor Red 
     }
 
     $frontendPort = [bool](Get-NetTCPConnection -LocalPort 5173 -State Listen -ErrorAction SilentlyContinue)
     if ($frontendPort) { 
         Write-Host "[OK] Frontend Service (Port 5173)" -ForegroundColor Green 
-    } else { 
+    }
+    else { 
         Write-Host "[X] Frontend Service (Port 5173)" -ForegroundColor Red 
     }
 
@@ -76,8 +84,8 @@ function Show-Status {
     Write-Host ""
 }
 
-function Run-Doctor {
-    param ([switch]$IncludeStatus = $true)
+function Invoke-Doctor {
+    param ([switch]$SkipStatus)
     
     Write-Host "`nSentinelAI Doctor" -ForegroundColor Cyan
     Write-Host "-----------------" -ForegroundColor Cyan
@@ -87,7 +95,8 @@ function Run-Doctor {
     # 1. Check Docker
     if (Test-CommandExists "docker") {
         Write-Host "[OK] Docker CLI found." -ForegroundColor Green
-    } else {
+    }
+    else {
         Write-Host "[!] Docker CLI not found (Optional: Hindsight vector memory)." -ForegroundColor Yellow
     }
     
@@ -95,7 +104,8 @@ function Run-Doctor {
     if (Test-CommandExists "python") {
         $pyVersion = (& python --version 2>&1)
         Write-Host "[OK] Python found ($pyVersion)." -ForegroundColor Green
-    } else {
+    }
+    else {
         Write-Host "[X] Python is missing. Install Python 3.9+." -ForegroundColor Red
         $hasErrors = $true
     }
@@ -104,7 +114,8 @@ function Run-Doctor {
     if (Test-CommandExists "npm") {
         $nodeVersion = (& node --version 2>&1)
         Write-Host "[OK] Node.js and npm found ($nodeVersion)." -ForegroundColor Green
-    } else {
+    }
+    else {
         Write-Host "[X] Node.js / npm is missing. Install Node.js (v18+ recommended)." -ForegroundColor Red
         $hasErrors = $true
     }
@@ -115,7 +126,8 @@ function Run-Doctor {
             Write-Host "[!] .env file missing. Created automatically from .env.example." -ForegroundColor Yellow
             Copy-Item "$ScriptDir\.env.example" "$ScriptDir\.env"
         }
-    } else {
+    }
+    else {
         Write-Host "[OK] .env configuration file present." -ForegroundColor Green
     }
     
@@ -123,7 +135,8 @@ function Run-Doctor {
     $pythonVenv = "$ScriptDir\backend\venv"
     if (Test-Path $pythonVenv) {
         Write-Host "[OK] Backend virtual environment found." -ForegroundColor Green
-    } else {
+    }
+    else {
         Write-Host "[!] Backend virtual environment not initialized (will auto-create on start)." -ForegroundColor Yellow
     }
     
@@ -131,11 +144,12 @@ function Run-Doctor {
     $frontendModules = "$ScriptDir\sentinel-ai\node_modules"
     if (Test-Path $frontendModules) {
         Write-Host "[OK] Frontend node_modules present." -ForegroundColor Green
-    } else {
+    }
+    else {
         Write-Host "[!] Frontend dependencies not installed (will auto-install on start)." -ForegroundColor Yellow
     }
 
-    if ($IncludeStatus) {
+    if (-not $SkipStatus) {
         Show-Status
     }
     
@@ -171,7 +185,7 @@ function Stop-Services {
 function Start-Services {
     Write-Host "Starting SentinelAI..." -ForegroundColor Cyan
     
-    $doctorPassed = Run-Doctor -IncludeStatus:$false
+    $doctorPassed = Invoke-Doctor -SkipStatus
     if (-not $doctorPassed) {
         Write-Host "`n[ERROR] Missing core prerequisites. Please install required software above." -ForegroundColor Red
         return
@@ -183,13 +197,16 @@ function Start-Services {
             if ($LASTEXITCODE -eq 0) {
                 Write-Host "Starting Docker services (Hindsight)..."
                 docker compose up -d 2>$null
-            } else {
+            }
+            else {
                 Write-Host "Docker daemon is not running. Proceeding with in-memory mode..." -ForegroundColor Yellow
             }
-        } catch {
+        }
+        catch {
             Write-Host "Skipping Docker services..." -ForegroundColor Yellow
         }
-    } else {
+    }
+    else {
         Write-Host "Docker not found. In-memory mode active..." -ForegroundColor Yellow
     }
 
@@ -207,7 +224,8 @@ function Start-Services {
     if (-not $backendPort) {
         $StartBackend = "Set-Location -Path '$ScriptDir\backend'; & '$uvicornExe' main:app --host 0.0.0.0 --port 8000"
         Start-Process powershell -ArgumentList "-NoExit", "-Command", $StartBackend -WindowStyle Minimized
-    } else {
+    }
+    else {
         Write-Host "Backend already running on port 8000." -ForegroundColor Green
     }
 
@@ -221,7 +239,8 @@ function Start-Services {
     if (-not $frontendPort) {
         $StartFrontend = "Set-Location -Path '$ScriptDir\sentinel-ai'; npm run dev"
         Start-Process powershell -ArgumentList "-NoExit", "-Command", $StartFrontend -WindowStyle Minimized
-    } else {
+    }
+    else {
         Write-Host "Frontend already running on port 5173." -ForegroundColor Green
     }
 
@@ -236,6 +255,6 @@ switch ($Command.ToLower()) {
     "stop" { Stop-Services }
     "restart" { Stop-Services; Start-Sleep -Seconds 2; Start-Services }
     "status" { Show-Status }
-    "doctor" { Run-Doctor }
+    "doctor" { Invoke-Doctor }
     default { Write-Host "Usage: .\sentinelai.ps1 [start|stop|restart|status|doctor]" }
 }
