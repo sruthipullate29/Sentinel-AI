@@ -43,20 +43,22 @@ export default function LearningLoopBar({ activeStepId, onSelectStep }) {
                 <div className="step-number">{index + 1}</div>
                 <IconComponent 
                   size={15} 
-                  color={isActive ? (isRememberOutcome ? '#c084fc' : '#22d3ee') : '#94a3b8'} 
+                  color={isActive ? 'var(--text-main)' : 'var(--text-muted)'} 
                 />
                 <span style={{ 
                   fontSize: '0.82rem', 
                   fontWeight: isActive ? '700' : '500',
-                  color: isActive ? '#f8fafc' : '#cbd5e1'
+                  color: isActive ? 'var(--text-main)' : 'var(--text-muted)'
                 }}>
                   {step.label}
                 </span>
                 {isActive && (
-                  <span className="pulse-dot" style={{ 
-                    background: isRememberOutcome ? '#a855f7' : '#06b6d4',
+                  <span style={{ 
+                    background: 'var(--primary)',
                     width: '6px',
-                    height: '6px'
+                    height: '6px',
+                    borderRadius: '50%',
+                    display: 'inline-block'
                   }}></span>
                 )}
               </div>

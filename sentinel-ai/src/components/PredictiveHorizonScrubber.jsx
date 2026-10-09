@@ -41,10 +41,11 @@ export default function PredictiveHorizonScrubber({
   return (
     <div className="glass-panel" style={{
       padding: '1.25rem',
-      background: 'linear-gradient(135deg, rgba(20, 29, 48, 0.7), rgba(10, 15, 26, 0.9))',
+      background: 'var(--bg-card)',
       border: isAnomalous && horizonOffset >= 2 
-        ? '1px solid rgba(244, 63, 94, 0.45)' 
+        ? '1px solid rgba(239, 68, 68, 0.35)' 
         : '1px solid var(--border-subtle)',
+      boxShadow: 'var(--shadow-sm)',
       position: 'relative',
       overflow: 'hidden'
     }}>
@@ -56,7 +57,7 @@ export default function PredictiveHorizonScrubber({
           right: 0,
           width: '280px',
           height: '100%',
-          background: 'radial-gradient(ellipse at top right, rgba(244, 63, 94, 0.12), transparent 70%)',
+          background: 'radial-gradient(ellipse at top right, rgba(239, 68, 68, 0.08), transparent 70%)',
           pointerEvents: 'none'
         }} />
       )}
@@ -64,20 +65,20 @@ export default function PredictiveHorizonScrubber({
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Clock size={18} color="#22d3ee" />
-          <h3 style={{ fontSize: '0.98rem', fontWeight: 700, margin: 0, color: '#f8fafc' }}>
+          <Clock size={18} color="var(--text-main)" />
+          <h3 style={{ fontSize: '0.98rem', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
             Predictive Horizon Time-Travel Scrubber
           </h3>
-          <span className="badge badge-cyan" style={{ fontSize: '0.66rem' }}>
+          <span className="badge badge-zinc" style={{ fontSize: '0.66rem' }}>
             Forecast Engine
           </span>
         </div>
 
         <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
           {isAnomalous ? (
-            <span style={{ color: '#fb7185' }}>⚠ Trajectory: Velocity Vector Escalating</span>
+            <span style={{ color: '#ef4444' }}>⚠ Trajectory: Velocity Vector Escalating</span>
           ) : (
-            <span style={{ color: '#34d399' }}>✓ Trajectory: Steady-State Equilibrium</span>
+            <span style={{ color: '#10b981' }}>✓ Trajectory: Steady-State Equilibrium</span>
           )}
         </div>
       </div>
@@ -86,17 +87,35 @@ export default function PredictiveHorizonScrubber({
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        background: 'rgba(5, 8, 15, 0.6)',
-        padding: '4px',
-        borderRadius: '10px',
+        background: 'var(--bg-subtle)',
+        padding: '5px',
+        borderRadius: '12px',
         border: '1px solid var(--border-subtle)',
-        gap: '4px',
+        gap: '5px',
         overflowX: 'auto',
         marginBottom: '1rem'
       }}>
         {HORIZONS.map((h, idx) => {
           const isSelected = horizonOffset === idx;
           const isDanger = isAnomalous && idx >= 2;
+
+          let pillBg = 'transparent';
+          let pillBorder = '1px solid transparent';
+          let pillColor = 'var(--text-muted)';
+          let pillShadow = 'none';
+
+          if (isSelected) {
+            if (isDanger) {
+              pillBg = 'rgba(239, 68, 68, 0.12)';
+              pillBorder = '1px solid rgba(239, 68, 68, 0.35)';
+              pillColor = '#ef4444';
+            } else {
+              pillBg = 'var(--bg-card)';
+              pillBorder = '1px solid var(--border-subtle)';
+              pillColor = 'var(--text-main)';
+              pillShadow = 'var(--shadow-sm)';
+            }
+          }
 
           return (
             <button
@@ -106,19 +125,14 @@ export default function PredictiveHorizonScrubber({
               style={{
                 flex: 1,
                 minWidth: '120px',
-                padding: '7px 10px',
-                borderRadius: '7px',
+                padding: '8px 12px',
+                borderRadius: '8px',
                 fontSize: '0.76rem',
                 fontWeight: isSelected ? '700' : '500',
-                background: isSelected 
-                  ? (isDanger ? 'rgba(244, 63, 94, 0.25)' : 'rgba(6, 182, 212, 0.2)') 
-                  : 'transparent',
-                color: isSelected 
-                  ? (isDanger ? '#fda4af' : '#22d3ee') 
-                  : 'var(--text-muted)',
-                border: isSelected 
-                  ? `1px solid ${isDanger ? 'rgba(244, 63, 94, 0.5)' : 'rgba(6, 182, 212, 0.5)'}` 
-                  : '1px solid transparent',
+                background: pillBg,
+                color: pillColor,
+                border: pillBorder,
+                boxShadow: pillShadow,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
                 display: 'flex',
@@ -128,7 +142,7 @@ export default function PredictiveHorizonScrubber({
               }}
             >
               <span>{h.label}</span>
-              <span style={{ fontSize: '0.62rem', color: isSelected ? '#fff' : 'var(--text-subtle)', opacity: 0.8 }}>
+              <span style={{ fontSize: '0.62rem', color: isSelected ? 'var(--text-main)' : 'var(--text-subtle)', opacity: 0.85 }}>
                 {idx === 0 ? 'Live Telemetry' : `T+${h.seconds}s`}
               </span>
             </button>
@@ -139,23 +153,23 @@ export default function PredictiveHorizonScrubber({
       {/* Projection Comparison Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '1rem', alignItems: 'center' }}>
         <div style={{
-          background: 'rgba(255, 255, 255, 0.03)',
+          background: 'var(--bg-subtle)',
           border: '1px solid var(--border-subtle)',
           borderRadius: '10px',
-          padding: '10px 14px'
+          padding: '12px 14px'
         }}>
-          <div style={{ fontSize: '0.72rem', color: 'var(--text-subtle)' }}>Projected CPU Saturation</div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 500 }}>Projected CPU Saturation</div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '3px' }}>
             <span style={{
               fontSize: '1.4rem',
               fontWeight: 700,
               fontFamily: 'var(--font-mono)',
-              color: projectedCpu > 80 ? '#fb7185' : '#22d3ee'
+              color: projectedCpu > 80 ? '#ef4444' : 'var(--text-main)'
             }}>
               {projectedCpu.toFixed(1)}%
             </span>
             {horizonOffset > 0 && isAnomalous && (
-              <span style={{ fontSize: '0.72rem', color: '#fb7185' }}>
+              <span style={{ fontSize: '0.72rem', color: '#ef4444', fontWeight: 600 }}>
                 (+{(projectedCpu - currentScenario.metrics.cpu).toFixed(0)}% projected)
               </span>
             )}
@@ -166,23 +180,23 @@ export default function PredictiveHorizonScrubber({
         </div>
 
         <div style={{
-          background: 'rgba(255, 255, 255, 0.03)',
+          background: 'var(--bg-subtle)',
           border: '1px solid var(--border-subtle)',
           borderRadius: '10px',
-          padding: '10px 14px'
+          padding: '12px 14px'
         }}>
-          <div style={{ fontSize: '0.72rem', color: 'var(--text-subtle)' }}>Projected Memory Fill</div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 500 }}>Projected Memory Fill</div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '3px' }}>
             <span style={{
               fontSize: '1.4rem',
               fontWeight: 700,
               fontFamily: 'var(--font-mono)',
-              color: projectedRam > 85 ? '#fb7185' : '#a78bfa'
+              color: projectedRam > 85 ? '#ef4444' : 'var(--text-main)'
             }}>
               {projectedRam.toFixed(1)}%
             </span>
             {horizonOffset > 0 && isAnomalous && (
-              <span style={{ fontSize: '0.72rem', color: '#fb7185' }}>
+              <span style={{ fontSize: '0.72rem', color: '#ef4444', fontWeight: 600 }}>
                 ({((projectedRam / 100) * 32).toFixed(1)} GB used)
               </span>
             )}
@@ -193,18 +207,18 @@ export default function PredictiveHorizonScrubber({
         </div>
 
         <div style={{
-          background: 'rgba(255, 255, 255, 0.03)',
+          background: 'var(--bg-subtle)',
           border: '1px solid var(--border-subtle)',
           borderRadius: '10px',
-          padding: '10px 14px'
+          padding: '12px 14px'
         }}>
-          <div style={{ fontSize: '0.72rem', color: 'var(--text-subtle)' }}>Risk Trajectory</div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 500 }}>Risk Trajectory</div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '3px' }}>
             <span style={{
               fontSize: '1.4rem',
               fontWeight: 700,
               fontFamily: 'var(--font-mono)',
-              color: projectedRisk > 60 ? '#fb7185' : '#34d399'
+              color: projectedRisk > 60 ? '#ef4444' : 'var(--text-main)'
             }}>
               {projectedRisk} / 100
             </span>
@@ -225,10 +239,11 @@ export default function PredictiveHorizonScrubber({
               className="btn-primary-action"
               onClick={onPreemptAction}
               style={{
-                background: 'linear-gradient(135deg, #06b6d4, #8b5cf6)',
-                boxShadow: '0 4px 15px rgba(6, 182, 212, 0.4)',
-                padding: '8px 14px',
-                fontSize: '0.8rem'
+                background: 'var(--primary)',
+                color: 'var(--primary-text)',
+                padding: '9px 16px',
+                fontSize: '0.8rem',
+                boxShadow: 'var(--shadow-sm)'
               }}
             >
               <Zap size={14} />

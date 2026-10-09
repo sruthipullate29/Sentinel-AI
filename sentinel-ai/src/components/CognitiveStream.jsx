@@ -5,9 +5,9 @@ export default function CognitiveStream({ systemStatus, currentScenario, activeS
   const [isOpen, setIsOpen] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [logs, setLogs] = useState([
-    { id: 1, time: '22:45:01', tag: 'KERNEL', text: 'eBPF kprobe attached: sys_enter_sched_switch & mm_page_alloc', level: 'info' },
-    { id: 2, time: '22:45:03', tag: 'VECTOR-DB', text: 'Loaded 4 episodic incidents from SQLite vector store', level: 'info' },
-    { id: 3, time: '22:45:05', tag: 'INVARIANT', text: 'Workstation baseline established: CPU idle ~18%, RAM 42%', level: 'success' }
+    { id: 1, time: '22:45:01', tag: 'KERNEL', text: 'Telemetry hooks attached: process_iter & virtual_memory sensors', level: 'info' },
+    { id: 2, time: '22:45:03', tag: 'VECTOR-DB', text: 'Loaded 6 episodic incidents from SQLite vector store (Chrome, Node, Antigravity IDE, Edge, Explorer, OneDrive)', level: 'info' },
+    { id: 3, time: '22:45:05', tag: 'INVARIANT', text: 'Windows 11 workstation baseline established: 14 Cores / 20 Threads, 16 GB RAM', level: 'success' }
   ]);
   const logContainerRef = useRef(null);
 
@@ -28,7 +28,7 @@ export default function CognitiveStream({ systemStatus, currentScenario, activeS
       let newLog;
       if (currentScenario.id === 'NORMAL') {
         const sampleLogs = [
-          { tag: 'KERNEL', text: `eBPF sampled PID 3102 (code.exe): CPU ${ (Math.random() * 3 + 2).toFixed(1) }%, 0 lock waits`, level: 'info' },
+          { tag: 'KERNEL', text: `eBPF sampled PID 3102 (code.exe): CPU ${(Math.random() * 3 + 2).toFixed(1)}%, 0 lock waits`, level: 'info' },
           { tag: 'HINDSIGHT', text: 'Periodic vector similarity scan against anomalous clusters: cosine dist > 0.88 (All Nominal)', level: 'info' },
           { tag: 'POLICY', text: 'Host power governor: Balanced. Thermal envelope within safe TDP (48°C)', level: 'success' },
           { tag: 'OBSERVE', text: 'Workstation habit: User actively typing in editor, dev server HMR idle', level: 'info' }
@@ -53,13 +53,13 @@ export default function CognitiveStream({ systemStatus, currentScenario, activeS
 
   const getTagColor = (tag) => {
     switch (tag) {
-      case 'KERNEL': return '#22d3ee';
+      case 'KERNEL': return 'var(--text-main)';
       case 'VECTOR-DB':
-      case 'HINDSIGHT': return '#c084fc';
+      case 'HINDSIGHT': return 'var(--text-muted)';
       case 'ALERT': return '#fb7185';
       case 'POLICY':
-      case 'INVARIANT': return '#34d399';
-      default: return '#fbbf24';
+      case 'INVARIANT': return '#10b981';
+      default: return '#f59e0b';
     }
   };
 
@@ -80,21 +80,20 @@ export default function CognitiveStream({ systemStatus, currentScenario, activeS
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(7, 9, 14, 0.95))',
-            border: '1px solid rgba(6, 182, 212, 0.4)',
+            background: 'var(--bg-card)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: '999px',
             padding: '8px 16px',
-            color: '#fff',
-            boxShadow: '0 8px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(6, 182, 212, 0.3)',
+            color: 'var(--text-main)',
+            boxShadow: 'var(--shadow-sm)',
             cursor: 'pointer',
             fontSize: '0.8rem',
             backdropFilter: 'blur(10px)'
           }}
-          className="glow-cyan"
         >
-          <BrainCircuit size={15} color="#22d3ee" />
+          <BrainCircuit size={15} color="var(--primary)" />
           <span style={{ fontWeight: 600 }}>AI Cognitive Stream</span>
-          <span className="pulse-dot" style={{ background: currentScenario.id === 'NORMAL' ? '#10b981' : '#f43f5e', width: '7px', height: '7px' }}></span>
+          <span className="pulse-dot" style={{ background: currentScenario.id === 'NORMAL' ? '#10b981' : '#ef4444', width: '7px', height: '7px' }}></span>
           <ChevronUp size={14} color="var(--text-muted)" />
         </button>
       ) : (
@@ -103,10 +102,10 @@ export default function CognitiveStream({ systemStatus, currentScenario, activeS
           width: '460px',
           maxWidth: '92vw',
           height: '320px',
-          background: 'rgba(8, 11, 20, 0.96)',
-          border: '1px solid rgba(6, 182, 212, 0.35)',
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border-subtle)',
           borderRadius: '12px',
-          boxShadow: '0 15px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(6, 182, 212, 0.25)',
+          boxShadow: 'var(--shadow-sm)',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
@@ -119,16 +118,16 @@ export default function CognitiveStream({ systemStatus, currentScenario, activeS
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '8px 12px',
-            background: 'rgba(15, 23, 42, 0.9)',
+            background: 'var(--bg-subtle)',
             borderBottom: '1px solid var(--border-subtle)',
             fontSize: '0.78rem'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Terminal size={14} color="#22d3ee" />
-              <span style={{ fontWeight: 700, color: '#f8fafc' }}>
+              <Terminal size={14} color="var(--primary)" />
+              <span style={{ fontWeight: 700, color: 'var(--text-main)' }}>
                 SentinelAI • Cognitive Stream
               </span>
-              <span className="badge badge-cyan" style={{ fontSize: '0.62rem', padding: '1px 5px' }}>
+              <span className="badge badge-zinc" style={{ fontSize: '0.62rem', padding: '1px 5px' }}>
                 LIVE eBPF
               </span>
             </div>
@@ -140,7 +139,7 @@ export default function CognitiveStream({ systemStatus, currentScenario, activeS
                 title={isPaused ? 'Resume stream' : 'Pause stream'}
                 style={{ background: 'transparent', color: 'var(--text-muted)', padding: '2px 4px' }}
               >
-                {isPaused ? <Play size={13} color="#34d399" /> : <Pause size={13} />}
+                {isPaused ? <Play size={13} color="#10b981" /> : <Pause size={13} />}
               </button>
               <button
                 type="button"
@@ -178,16 +177,16 @@ export default function CognitiveStream({ systemStatus, currentScenario, activeS
             {logs.map((log) => (
               <div key={log.id} style={{ display: 'flex', gap: '6px', alignItems: 'flex-start' }}>
                 <span style={{ color: 'var(--text-subtle)' }}>[{log.time}]</span>
-                <span style={{ 
-                  color: getTagColor(log.tag), 
-                  fontWeight: 700, 
+                <span style={{
+                  color: getTagColor(log.tag),
+                  fontWeight: 700,
                   background: 'rgba(255, 255, 255, 0.04)',
                   padding: '0 4px',
                   borderRadius: '3px'
                 }}>
                   {log.tag}
                 </span>
-                <span style={{ color: log.level === 'error' ? '#fb7185' : (log.level === 'warning' ? '#fde047' : '#e2e8f0'), flex: 1 }}>
+                <span style={{ color: log.level === 'error' ? '#fb7185' : (log.level === 'warning' ? '#f59e0b' : 'var(--text-main)'), flex: 1 }}>
                   {log.text}
                 </span>
               </div>
@@ -197,7 +196,7 @@ export default function CognitiveStream({ systemStatus, currentScenario, activeS
           {/* Footer Status Bar */}
           <div style={{
             padding: '4px 12px',
-            background: 'rgba(5, 7, 12, 0.95)',
+            background: 'var(--bg-subtle)',
             borderTop: '1px solid var(--border-subtle)',
             fontSize: '0.68rem',
             color: 'var(--text-subtle)',
@@ -206,7 +205,7 @@ export default function CognitiveStream({ systemStatus, currentScenario, activeS
             alignItems: 'center'
           }}>
             <span>Agent Inference Cycle: ~12ms</span>
-            <span style={{ color: '#22d3ee' }}>Loop Stage: {activeStepId.toUpperCase()}</span>
+            <span style={{ color: 'var(--text-muted)' }}>Loop Stage: {activeStepId.toUpperCase()}</span>
           </div>
         </div>
       )}

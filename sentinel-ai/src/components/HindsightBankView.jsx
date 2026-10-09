@@ -53,7 +53,7 @@ export default function HindsightBankView({ incidents, onSelectIncident, onReini
     const stages = [
       'Probing kernel eBPF tracepoints & sensor telemetry channels',
       'Allocating SQLite Vector Store schema & index buffers',
-      'Ingesting 4 baseline failure episodes (Docker, Node, Postgres, Chrome)',
+      'Ingesting 6 workstation failure episodes (Chrome, Node, Antigravity IDE, Edge, Explorer, OneDrive)',
       'Synthesizing 384-dimensional cosine similarity embeddings',
       'Validating Human-in-the-Loop sandbox boundaries'
     ];
@@ -79,12 +79,12 @@ export default function HindsightBankView({ incidents, onSelectIncident, onReini
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       {/* Overview Stat Strip */}
-      <div className="glass-panel" style={{ padding: '1.25rem 1.5rem', background: '#0d0f26', borderColor: 'rgba(139, 92, 246, 0.25)' }}>
+      <div className="glass-panel" style={{ padding: '1.25rem 1.5rem', background: 'var(--bg-card)', borderColor: 'var(--border-subtle)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.5rem' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <BrainCircuit size={22} color="#a78bfa" />
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: '#ffffff' }}>
+              <BrainCircuit size={22} color="var(--text-main)" />
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
                 Hindsight Episodic Memory Bank
               </h2>
             </div>
@@ -96,7 +96,7 @@ export default function HindsightBankView({ incidents, onSelectIncident, onReini
           <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexWrap: 'wrap' }}>
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', textTransform: 'uppercase' }}>Indexed Memories</div>
-              <div style={{ fontSize: '1.4rem', fontWeight: 700, color: '#c4b5fd', fontFamily: 'var(--font-display)' }}>
+              <div style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-main)', fontFamily: 'var(--font-display)' }}>
                 {incidents.length} Incidents
               </div>
             </div>
@@ -115,12 +115,9 @@ export default function HindsightBankView({ incidents, onSelectIncident, onReini
               className="btn-primary-action"
               onClick={handleStartInitialization}
               style={{
-                background: 'linear-gradient(135deg, #6366f1, #7c3aed)',
-                boxShadow: '0 4px 18px rgba(124, 58, 237, 0.4)',
                 fontSize: '0.8rem',
                 padding: '8px 18px',
                 borderRadius: '9999px',
-                color: '#ffffff',
                 fontWeight: 600
               }}
             >
@@ -245,25 +242,25 @@ export default function HindsightBankView({ incidents, onSelectIncident, onReini
                 <div style={{ 
                   fontSize: '0.8rem', 
                   color: 'var(--text-muted)', 
-                  background: 'rgba(0,0,0,0.25)', 
+                  background: 'rgba(125, 125, 125, 0.08)', 
                   padding: '8px 10px', 
                   borderRadius: '6px',
-                  borderLeft: '2px solid #8b5cf6',
+                  borderLeft: '2px solid var(--border-active)',
                   marginBottom: '10px'
                 }}>
-                  <strong style={{ color: '#cbd5e1' }}>Identified Root Cause: </strong>
+                  <strong style={{ color: 'var(--text-main)' }}>Identified Root Cause: </strong>
                   {incident.rootCause}
                 </div>
 
                 {/* Action Taken */}
-                <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '10px' }}>
-                  <strong style={{ color: '#38bdf8' }}>Proven Resolution: </strong>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+                  <strong style={{ color: 'var(--text-main)' }}>Proven Resolution: </strong>
                   {incident.actionTaken}
                 </div>
 
                 {/* User Note */}
                 {incident.userNotes && (
-                  <div style={{ fontSize: '0.78rem', color: '#a78bfa', fontStyle: 'italic', marginBottom: '10px' }}>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-subtle)', fontStyle: 'italic', marginBottom: '10px' }}>
                     💬 "{incident.userNotes}"
                   </div>
                 )}
@@ -321,15 +318,15 @@ export default function HindsightBankView({ incidents, onSelectIncident, onReini
                   width: '34px',
                   height: '34px',
                   borderRadius: '8px',
-                  background: 'rgba(139, 92, 246, 0.2)',
+                  background: 'rgba(125, 125, 125, 0.12)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  <Database size={18} color="#c084fc" />
+                  <Database size={18} color="var(--text-main)" />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: '#fff' }}>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
                     {initStage === 6 ? 'Hindsight Memory Initialized' : 'Initializing Hindsight Memory Core...'}
                   </h3>
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>

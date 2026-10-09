@@ -42,10 +42,10 @@ export default function TelemetryGauges({ metrics, history, anomalyRisk }) {
   const getProgressColor = (val, highIsBad = true) => {
     if (highIsBad) {
       if (val > 80) return 'var(--rose-primary)';
-      if (val > 60) return '#f59e0b';
-      return 'linear-gradient(90deg, #6366f1, #a855f7)';
+      if (val > 60) return 'var(--amber-primary)';
+      return 'var(--primary)';
     }
-    return '#10b981';
+    return 'var(--emerald-primary)';
   };
 
   const cpuData = history?.map(h => h.cpu) || [20, 22, 25, 20, 24];
@@ -59,24 +59,24 @@ export default function TelemetryGauges({ metrics, history, anomalyRisk }) {
       <div className="glass-panel metric-card">
         <div className="metric-card-header">
           <div>
-            <div style={{ fontSize: '0.78rem', color: '#94a3b8', fontWeight: 600 }}>Monthly Workload</div>
-            <div style={{ fontSize: '0.7rem', color: '#64748b' }}>Total Process Thread Pool</div>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600 }}>Monthly Workload</div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-subtle)' }}>Total Process Thread Pool</div>
           </div>
           <span className="badge badge-purple" style={{ fontSize: '0.68rem' }}>
-            16C / 32T
+            14C / 20T • i7-12700H
           </span>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', margin: '0.75rem 0' }}>
           <div>
-            <div style={{ fontSize: '0.7rem', color: '#64748b' }}>Total threads</div>
-            <div style={{ fontSize: '1.6rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)' }}>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-subtle)' }}>Total threads</div>
+            <div style={{ fontSize: '1.6rem', fontWeight: 700, color: 'var(--text-main)', fontFamily: 'var(--font-display)' }}>
               25.4k
             </div>
           </div>
           <div>
-            <div style={{ fontSize: '0.7rem', color: '#64748b' }}>CPU Load</div>
-            <div style={{ fontSize: '1.6rem', fontWeight: 700, color: metrics.cpu > 80 ? 'var(--rose-bright)' : '#c4b5fd', fontFamily: 'var(--font-display)' }}>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-subtle)' }}>CPU Load</div>
+            <div style={{ fontSize: '1.6rem', fontWeight: 700, color: metrics.cpu > 80 ? 'var(--rose-bright)' : 'var(--text-main)', fontFamily: 'var(--font-display)' }}>
               {metrics.cpu.toFixed(1)}%
             </div>
           </div>
@@ -87,14 +87,14 @@ export default function TelemetryGauges({ metrics, history, anomalyRisk }) {
             className="metric-progress-fill" 
             style={{ 
               width: `${Math.min(100, metrics.cpu)}%`,
-              background: metrics.cpu > 80 ? 'var(--rose-primary)' : 'linear-gradient(90deg, #6366f1, #a855f7)'
+              background: metrics.cpu > 80 ? 'var(--rose-primary)' : 'var(--primary)'
             }}
           />
         </div>
 
         <div className="metric-footer" style={{ marginTop: '8px' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Flame size={12} color={metrics.temp > 80 ? '#f43f5e' : '#a78bfa'} />
+            <Flame size={12} color={metrics.temp > 80 ? '#ef4444' : 'var(--text-muted)'} />
             Pkg Temp: {metrics.temp}°C
           </span>
           <span>Active Capacity: 1.3M ops</span>
@@ -104,42 +104,42 @@ export default function TelemetryGauges({ metrics, history, anomalyRisk }) {
       {/* Card 2: Revenue Summary Style -> Telemetry Breakdown */}
       <div className="glass-panel metric-card">
         <div className="metric-card-header">
-          <span className="metric-title" style={{ color: '#ffffff', fontWeight: 700 }}>
+          <span className="metric-title" style={{ color: 'var(--text-main)', fontWeight: 700 }}>
             Revenue & Resource Summary
           </span>
-          <span style={{ fontSize: '0.7rem', color: '#64748b', fontFamily: 'var(--font-mono)' }}>Last 10 Secs</span>
+          <span style={{ fontSize: '0.7rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>Last 10 Secs</span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '0.5rem 0 0.75rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '6px' }}>
-            <span style={{ color: '#94a3b8' }}>Host CPU Load</span>
-            <span style={{ color: '#ffffff', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>{metrics.cpu.toFixed(1)}%</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '6px' }}>
+            <span style={{ color: 'var(--text-muted)' }}>Host CPU Load</span>
+            <span style={{ color: 'var(--text-main)', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>{metrics.cpu.toFixed(1)}%</span>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '6px' }}>
-            <span style={{ color: '#94a3b8' }}>RAM Allocation</span>
-            <span style={{ color: '#ffffff', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>{((metrics.ram / 100) * 32).toFixed(1)} GB</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '6px' }}>
+            <span style={{ color: 'var(--text-muted)' }}>RAM Allocation</span>
+            <span style={{ color: 'var(--text-main)', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>{((metrics.ram / 100) * 16).toFixed(1)} GB</span>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '6px' }}>
-            <span style={{ color: '#94a3b8' }}>NVMe Storage Throughput</span>
-            <span style={{ color: '#ffffff', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>{metrics.disk.toFixed(0)} MB/s</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '6px' }}>
+            <span style={{ color: 'var(--text-muted)' }}>NVMe Storage Throughput</span>
+            <span style={{ color: 'var(--text-main)', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>{metrics.disk.toFixed(0)} MB/s</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem' }}>
-            <span style={{ color: '#94a3b8' }}>eBPF Active Probes</span>
-            <span style={{ color: '#a78bfa', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>3,120 /s</span>
+            <span style={{ color: 'var(--text-muted)' }}>eBPF Active Probes</span>
+            <span style={{ color: 'var(--text-main)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>3,120 /s</span>
           </div>
         </div>
 
-        <div className="metric-footer" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.05)', paddingTop: '6px' }}>
+        <div className="metric-footer" style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '6px' }}>
           <span>Kernel Ring Buffer</span>
-          <span style={{ color: '#34d399' }}>● 100% Synced</span>
+          <span style={{ color: 'var(--emerald-bright)' }}>● 100% Synced</span>
         </div>
       </div>
 
-      {/* Card 3: Real-Time Style (Matches the right-hand card with smooth bottom wave in the screenshot!) */}
+      {/* Card 3: Real-Time Style */}
       <div className="glass-panel metric-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div>
           <div className="metric-card-header">
-            <span className="metric-title" style={{ color: '#94a3b8' }}>
+            <span className="metric-title" style={{ color: 'var(--text-muted)' }}>
               Real-time
             </span>
             <span className="badge badge-purple" style={{ fontSize: '0.66rem' }}>
@@ -148,22 +148,22 @@ export default function TelemetryGauges({ metrics, history, anomalyRisk }) {
           </div>
 
           <div style={{ margin: '0.5rem 0' }}>
-            <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#ffffff', fontFamily: 'var(--font-display)', lineHeight: 1 }}>
+            <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--text-main)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>
               {anomalyRisk > 60 ? `${anomalyRisk}` : '49'}
             </div>
-            <div style={{ fontSize: '0.78rem', color: anomalyRisk > 60 ? 'var(--rose-bright)' : '#94a3b8', marginTop: '4px' }}>
+            <div style={{ fontSize: '0.78rem', color: anomalyRisk > 60 ? 'var(--rose-bright)' : 'var(--text-muted)', marginTop: '4px' }}>
               {anomalyRisk > 60 ? 'Instability threat active' : 'Visiting now • Services nominal'}
             </div>
           </div>
         </div>
 
-        {/* Organic purple wave fill curve identical to the screenshot! */}
+        {/* Clean soft dark wave fill curve */}
         <div style={{ position: 'relative', height: '65px', margin: '4px -1.35rem -1.35rem', width: 'calc(100% + 2.7rem)', overflow: 'hidden' }}>
           <svg viewBox="0 0 240 65" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
             <defs>
               <linearGradient id="realtimeWaveGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.55" />
-                <stop offset="100%" stopColor="#431407" stopOpacity="0.0" />
+                <stop offset="0%" stopColor="var(--text-subtle)" stopOpacity="0.18" />
+                <stop offset="100%" stopColor="var(--text-subtle)" stopOpacity="0.0" />
               </linearGradient>
             </defs>
             <path
@@ -173,8 +173,8 @@ export default function TelemetryGauges({ metrics, history, anomalyRisk }) {
             <path
               d="M0,50 Q40,48 80,38 T160,25 T240,10"
               fill="none"
-              stroke="#a78bfa"
-              strokeWidth="2.4"
+              stroke="var(--text-muted)"
+              strokeWidth="2.2"
               strokeLinecap="round"
             />
           </svg>
@@ -185,17 +185,17 @@ export default function TelemetryGauges({ metrics, history, anomalyRisk }) {
       <div className="glass-panel metric-card">
         <div className="metric-card-header">
           <span className="metric-title">
-            <HardDrive size={16} color="#818cf8" />
+            <HardDrive size={16} color="var(--text-muted)" />
             System Memory (RAM)
           </span>
           <span className="badge badge-indigo" style={{ fontSize: '0.68rem' }}>
-            32 GB DDR5
+            16 GB DDR5
           </span>
         </div>
         <div className="metric-value-display">
           <span 
             className="metric-number"
-            style={{ color: metrics.ram > 85 ? 'var(--rose-bright)' : '#ffffff' }}
+            style={{ color: metrics.ram > 85 ? 'var(--rose-bright)' : 'var(--text-main)' }}
           >
             {metrics.ram.toFixed(1)}
           </span>
@@ -206,17 +206,17 @@ export default function TelemetryGauges({ metrics, history, anomalyRisk }) {
             className="metric-progress-fill" 
             style={{ 
               width: `${Math.min(100, metrics.ram)}%`,
-              background: metrics.ram > 85 ? 'var(--rose-primary)' : 'linear-gradient(90deg, #6366f1, #818cf8)'
+              background: metrics.ram > 85 ? 'var(--rose-primary)' : 'var(--primary)'
             }}
           />
         </div>
         <Sparkline 
           data={ramData} 
-          strokeColor={metrics.ram > 85 ? '#f43f5e' : '#818cf8'} 
+          strokeColor={metrics.ram > 85 ? 'var(--rose-primary)' : 'var(--text-subtle)'} 
         />
         <div className="metric-footer" style={{ marginTop: '6px' }}>
-          <span>Used: {((metrics.ram / 100) * 32).toFixed(1)} GB</span>
-          <span>Free: {(32 - (metrics.ram / 100) * 32).toFixed(1)} GB</span>
+          <span>Used: {((metrics.ram / 100) * 16).toFixed(1)} GB</span>
+          <span>Free: {(16 - (metrics.ram / 100) * 16).toFixed(1)} GB</span>
         </div>
       </div>
     </div>

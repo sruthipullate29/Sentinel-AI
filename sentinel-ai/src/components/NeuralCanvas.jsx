@@ -41,7 +41,8 @@ export default function NeuralCanvas() {
       if (dist > 8) {
         lastMousePos = { x: e.clientX, y: e.clientY };
 
-        // Subtle, low-intensity pure white micro-sparks
+        // Subtle indigo micro-sparks (dark) / slate micro-sparks (light)
+        const isLt = document.documentElement.getAttribute('data-theme') === 'light';
         const sparkCount = Math.min(2, Math.floor(dist / 16) + 1);
         for (let i = 0; i < sparkCount; i++) {
           sparks.push({
@@ -50,8 +51,8 @@ export default function NeuralCanvas() {
             vx: (Math.random() - 0.5) * 0.9,
             vy: (Math.random() - 0.5) * 0.9 - 0.15,
             radius: Math.random() * 1.5 + 0.8,
-            alpha: 0.32,
-            color: '255, 255, 255'
+            alpha: isLt ? 0.22 : 0.38,
+            color: isLt ? '100, 116, 139' : '165, 180, 252'
           });
         }
       }
@@ -108,51 +109,36 @@ export default function NeuralCanvas() {
       smoothMouse.y += (targetMouse.y - smoothMouse.y) * 0.18;
 
       // ----------------------------------------------------
-      // 0. RITEFLOW ETHEREAL VIOLET & INDIGO AMBIENT NEBULAS
+      // 0. SUBTLE NEUTRAL AMBIENT BACKDROP
       // ----------------------------------------------------
-      ctx.save();
-      // Hero ambient purple crown glow
-      const heroNebula = ctx.createRadialGradient(
-        width * 0.5, Math.min(height * 0.22, 260), 0,
-        width * 0.5, Math.min(height * 0.22, 260), Math.min(width * 0.65, 700)
-      );
-      heroNebula.addColorStop(0, 'rgba(124, 58, 237, 0.25)');
-      heroNebula.addColorStop(0.35, 'rgba(99, 102, 241, 0.14)');
-      heroNebula.addColorStop(0.70, 'rgba(139, 92, 246, 0.04)');
-      heroNebula.addColorStop(1, 'rgba(7, 7, 20, 0)');
-      ctx.fillStyle = heroNebula;
-      ctx.fillRect(0, 0, width, height);
-
-      // Mid-page subtle purple glow behind dashboard
-      const dashNebula = ctx.createRadialGradient(
-        width * 0.5, height * 0.55, 0,
-        width * 0.5, height * 0.55, Math.min(width * 0.55, 580)
-      );
-      dashNebula.addColorStop(0, 'rgba(109, 40, 217, 0.16)');
-      dashNebula.addColorStop(0.45, 'rgba(99, 102, 241, 0.06)');
-      dashNebula.addColorStop(1, 'rgba(7, 7, 20, 0)');
-      ctx.fillStyle = dashNebula;
-      ctx.fillRect(0, 0, width, height);
-      ctx.restore();
+      // Clean neutral canvas without neon purple glows
 
       // ----------------------------------------------------
       // 1. SUBTLE, LOW-INTENSITY WHITE CURSOR HOVER SPOTLIGHT
       // ----------------------------------------------------
       if (smoothMouse.x > -500) {
+        const isLightNow = document.documentElement.getAttribute('data-theme') === 'light';
         ctx.save();
         ctx.globalCompositeOperation = 'screen';
 
-        const cursorSpotlightRadius = 200;
+        const cursorSpotlightRadius = 240;
         const cursorGrad = ctx.createRadialGradient(
           smoothMouse.x, smoothMouse.y, 0,
           smoothMouse.x, smoothMouse.y, cursorSpotlightRadius
         );
 
-        // Low-intensity soft white glow
-        cursorGrad.addColorStop(0, 'rgba(255, 255, 255, 0.08)');
-        cursorGrad.addColorStop(0.35, 'rgba(255, 255, 255, 0.03)');
-        cursorGrad.addColorStop(0.70, 'rgba(255, 255, 255, 0.008)');
-        cursorGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        if (isLightNow) {
+          // Light mode: very subtle gray-blue tint
+          cursorGrad.addColorStop(0, 'rgba(99, 102, 241, 0.04)');
+          cursorGrad.addColorStop(0.4, 'rgba(99, 102, 241, 0.015)');
+          cursorGrad.addColorStop(1, 'rgba(99, 102, 241, 0)');
+        } else {
+          // Dark mode: premium indigo spotlight
+          cursorGrad.addColorStop(0, 'rgba(129, 140, 248, 0.12)');
+          cursorGrad.addColorStop(0.35, 'rgba(129, 140, 248, 0.05)');
+          cursorGrad.addColorStop(0.70, 'rgba(129, 140, 248, 0.015)');
+          cursorGrad.addColorStop(1, 'rgba(129, 140, 248, 0)');
+        }
 
         ctx.fillStyle = cursorGrad;
         ctx.beginPath();
@@ -162,14 +148,18 @@ export default function NeuralCanvas() {
         // Delicate inner core
         const innerGlow = ctx.createRadialGradient(
           smoothMouse.x, smoothMouse.y, 0,
-          smoothMouse.x, smoothMouse.y, 28
+          smoothMouse.x, smoothMouse.y, 30
         );
-        innerGlow.addColorStop(0, 'rgba(255, 255, 255, 0.12)');
-        innerGlow.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        if (isLightNow) {
+          innerGlow.addColorStop(0, 'rgba(99, 102, 241, 0.08)');
+        } else {
+          innerGlow.addColorStop(0, 'rgba(165, 180, 252, 0.18)');
+        }
+        innerGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
         ctx.fillStyle = innerGlow;
         ctx.beginPath();
-        ctx.arc(smoothMouse.x, smoothMouse.y, 28, 0, Math.PI * 2);
+        ctx.arc(smoothMouse.x, smoothMouse.y, 30, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.restore();
@@ -242,19 +232,24 @@ export default function NeuralCanvas() {
           extraGlow = (1 - distToMouse / mouseRadius);
         }
 
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
         const isNearCursor = extraGlow > 0.05;
         const pulse = Math.sin(tick * 0.03 + i) * 0.25;
-        const currentRadius = Math.max(0.7, p.radius + pulse + extraGlow * 0.8);
+        const currentRadius = Math.max(0.7, p.radius + pulse + extraGlow * 0.9);
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, currentRadius, 0, Math.PI * 2);
 
         if (isNearCursor) {
-          // Soft White near cursor with decreased intensity
-          ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(0.45, 0.12 + extraGlow * 0.28)})`;
+          // Near cursor: accent color highlight
+          ctx.fillStyle = isLight
+            ? `rgba(99, 102, 241, ${Math.min(0.45, 0.12 + extraGlow * 0.32)})`
+            : `rgba(165, 180, 252, ${Math.min(0.55, 0.15 + extraGlow * 0.38)})`;
         } else {
-          // Subtle quiet slate
-          ctx.fillStyle = `rgba(161, 161, 170, ${p.baseAlpha})`;
+          // Default: muted neutral
+          ctx.fillStyle = isLight
+            ? `rgba(148, 163, 184, ${p.baseAlpha * 0.75})`
+            : `rgba(139, 143, 168, ${p.baseAlpha})`;
         }
         ctx.fill();
 
@@ -262,27 +257,31 @@ export default function NeuralCanvas() {
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const distBetween = Math.hypot(p.x - p2.x, p.y - p2.y);
-          const maxDist = 110;
+          const maxDist = 115;
 
           if (distBetween < maxDist) {
-            const linkAlpha = (1 - distBetween / maxDist) * 0.08;
+            const linkAlpha = (1 - distBetween / maxDist) * (isLight ? 0.06 : 0.09);
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(161, 161, 170, ${linkAlpha})`;
+            ctx.strokeStyle = isLight
+              ? `rgba(148, 163, 184, ${linkAlpha})`
+              : `rgba(139, 143, 168, ${linkAlpha})`;
             ctx.lineWidth = 0.7;
             ctx.stroke();
           }
         }
 
-        // Delicate, low-intensity white laser link to cursor when hovered
+        // Indigo accent link to cursor when hovered
         if (distToMouse < mouseRadius) {
-          const cursorLinkAlpha = (1 - distToMouse / mouseRadius) * 0.12; // low intensity
+          const cursorLinkAlpha = (1 - distToMouse / mouseRadius) * (isLight ? 0.1 : 0.16);
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(smoothMouse.x, smoothMouse.y);
-          ctx.strokeStyle = `rgba(255, 255, 255, ${cursorLinkAlpha})`;
-          ctx.lineWidth = 0.9;
+          ctx.strokeStyle = isLight
+            ? `rgba(99, 102, 241, ${cursorLinkAlpha})`
+            : `rgba(165, 180, 252, ${cursorLinkAlpha})`;
+          ctx.lineWidth = 0.85;
           ctx.stroke();
         }
       }

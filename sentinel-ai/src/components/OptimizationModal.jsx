@@ -280,8 +280,7 @@ export default function OptimizationModal({
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.75rem' }}>
                 <button
                   type="button"
-                  className="btn-primary-action glow-violet"
-                  style={{ background: 'linear-gradient(135deg, #8b5cf6, #6d28d9)' }}
+                  className="btn-primary-action"
                   onClick={handleCommitToHindsight}
                 >
                   <Sparkles size={16} />

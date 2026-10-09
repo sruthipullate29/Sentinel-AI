@@ -17,7 +17,7 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
     const x = Math.round(cx + Math.cos(angle) * rx);
     const y = Math.round(cy + Math.sin(angle) * ry);
 
-    const colors = ['#8b5cf6', '#a78bfa', '#6366f1', '#818cf8', '#c4b5fd', '#38bdf8', '#34d399'];
+    const colors = ['#38bdf8', '#10b981', '#818cf8', '#f59e0b', '#ec4899', '#6366f1'];
     return {
       x,
       y,
@@ -33,20 +33,20 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
 
   return (
     <div style={{
-      background: '#0d0f26',
-      border: '1px solid rgba(139, 92, 246, 0.25)',
+      background: 'var(--bg-card)',
+      border: '1px solid var(--border-subtle)',
       borderRadius: '18px',
       padding: '1.5rem',
       position: 'relative',
       overflow: 'hidden',
-      boxShadow: '0 16px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(124, 58, 237, 0.15)'
+      boxShadow: 'var(--shadow-lg)'
     }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <BrainCircuit size={18} color="#a78bfa" />
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: '#f8fafc' }}>
+            <BrainCircuit size={18} color="var(--text-main)" />
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
               Semantic Vector Similarity Lattice
             </h3>
             <span className="badge badge-purple" style={{ fontSize: '0.68rem' }}>
@@ -58,15 +58,15 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
           </p>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.74rem', color: '#cbd5e1' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.74rem', color: 'var(--text-muted)' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#8b5cf6' }}></span> Docker
+            <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#38bdf8' }}></span> Chrome / Edge
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#6366f1' }}></span> Node/V8
+            <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#818cf8' }}></span> Antigravity / Node
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#38bdf8' }}></span> Storage
+            <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#f59e0b' }}></span> Windows OS / Shell
           </span>
         </div>
       </div>
@@ -252,45 +252,45 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
         {/* Selected Incident Inspector Pane */}
         {selectedNode && (
           <div style={{
-            background: 'rgba(15, 23, 42, 0.95)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
+            background: 'var(--bg-card)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: '12px',
             padding: '1.25rem',
             display: 'flex',
             flexDirection: 'column',
             gap: '0.85rem',
-            boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)'
+            boxShadow: 'var(--shadow-sm)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span className="badge badge-violet" style={{ fontWeight: 700 }}>{selectedNode.id}</span>
-              <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontFamily: 'var(--font-mono)' }}>
+              <span className="badge badge-zinc" style={{ fontWeight: 700 }}>{selectedNode.id}</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>
                 {selectedNode.timestamp.split(' ')[0]}
               </span>
             </div>
 
-            <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff', margin: 0, lineHeight: '1.4' }}>
+            <h4 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-main)', margin: 0, lineHeight: '1.4' }}>
               {selectedNode.app}: {selectedNode.symptom}
             </h4>
 
             <div style={{
-              background: 'rgba(0, 0, 0, 0.45)',
+              background: 'var(--bg-subtle)',
               borderRadius: '8px',
               padding: '10px 12px',
               fontSize: '0.8rem',
               display: 'flex',
               flexDirection: 'column',
               gap: '6px',
-              border: '1px solid rgba(255, 255, 255, 0.08)'
+              border: '1px solid var(--border-subtle)'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#94a3b8', fontWeight: 600 }}>Root Cause:</span>
-                <span style={{ color: '#ffffff', textAlign: 'right', maxWidth: '65%', fontWeight: 500 }}>
+                <span style={{ color: 'var(--text-muted)', fontWeight: 600 }}>Root Cause:</span>
+                <span style={{ color: 'var(--text-main)', textAlign: 'right', maxWidth: '65%', fontWeight: 500 }}>
                   {selectedNode.rootCause}
                 </span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '6px' }}>
-                <span style={{ color: '#94a3b8', fontWeight: 600 }}>Action Taken:</span>
-                <span style={{ color: '#38bdf8', textAlign: 'right', maxWidth: '65%', fontWeight: 600 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--border-subtle)', paddingTop: '6px' }}>
+                <span style={{ color: 'var(--text-muted)', fontWeight: 600 }}>Action Taken:</span>
+                <span style={{ color: 'var(--text-main)', textAlign: 'right', maxWidth: '65%', fontWeight: 600 }}>
                   {selectedNode.actionTaken}
                 </span>
               </div>
@@ -298,29 +298,29 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
 
             {/* Outcome Stats */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-              <div style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.4)', borderRadius: '8px', padding: '8px', textAlign: 'center' }}>
-                <div style={{ fontSize: '0.68rem', color: '#94a3b8', textTransform: 'uppercase' }}>CPU Restored</div>
-                <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#34d399', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.25)', borderRadius: '8px', padding: '8px', textAlign: 'center' }}>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>CPU Restored</div>
+                <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#10b981', fontFamily: 'var(--font-mono)' }}>
                   {selectedNode.deltaCpu}%
                 </div>
               </div>
-              <div style={{ background: 'rgba(6, 182, 212, 0.12)', border: '1px solid rgba(6, 182, 212, 0.4)', borderRadius: '8px', padding: '8px', textAlign: 'center' }}>
-                <div style={{ fontSize: '0.68rem', color: '#94a3b8', textTransform: 'uppercase' }}>Effectiveness</div>
-                <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#22d3ee', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '8px', textAlign: 'center' }}>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Effectiveness</div>
+                <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', fontFamily: 'var(--font-mono)' }}>
                   {selectedNode.effectivenessScore}%
                 </div>
               </div>
             </div>
 
             <div style={{
-              background: 'rgba(139, 92, 246, 0.12)',
-              borderLeft: '3px solid #8b5cf6',
+              background: 'var(--bg-subtle)',
+              borderLeft: '3px solid var(--border-active)',
               padding: '8px 12px',
               borderRadius: '0 8px 8px 0',
               fontSize: '0.78rem',
-              color: '#e2e8f0'
+              color: 'var(--text-muted)'
             }}>
-              <strong style={{ color: '#c084fc' }}>Human Verification:</strong> "{selectedNode.userNotes}"
+              <strong style={{ color: 'var(--text-main)' }}>Human Verification:</strong> "{selectedNode.userNotes}"
             </div>
           </div>
         )}

@@ -34,26 +34,27 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'rgba(15, 23, 42, 0.7)'
+          background: 'var(--bg-subtle)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{
               width: '36px',
               height: '36px',
               borderRadius: '8px',
-              background: process.status === 'culprit' ? 'rgba(244, 63, 94, 0.2)' : 'rgba(6, 182, 212, 0.15)',
+              background: process.status === 'culprit' ? 'rgba(244, 63, 94, 0.15)' : 'var(--bg-subtle)',
+              border: '1px solid var(--border-subtle)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <Terminal size={18} color={process.status === 'culprit' ? '#fb7185' : '#22d3ee'} />
+              <Terminal size={18} color={process.status === 'culprit' ? '#fb7185' : 'var(--text-main)'} />
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, color: '#fff' }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
                   {process.name}
                 </h3>
-                <span className="badge badge-cyan" style={{ fontSize: '0.65rem' }}>
+                <span className="badge badge-zinc" style={{ fontSize: '0.65rem' }}>
                   PID {process.pid}
                 </span>
               </div>
@@ -76,14 +77,14 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
         {actionStatus && (
           <div style={{
             padding: '10px 1.5rem',
-            background: actionStatus.running ? 'rgba(245, 158, 11, 0.15)' : 'rgba(16, 185, 129, 0.15)',
-            borderBottom: `1px solid ${actionStatus.running ? '#f59e0b' : '#10b981'}`,
+            background: actionStatus.running ? 'rgba(245, 158, 11, 0.12)' : 'rgba(16, 185, 129, 0.12)',
+            borderBottom: `1px solid ${actionStatus.running ? 'rgba(245, 158, 11, 0.3)' : 'rgba(16, 185, 129, 0.3)'}`,
             fontSize: '0.8rem',
             fontFamily: 'var(--font-mono)',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            color: '#fff'
+            color: 'var(--text-main)'
           }}>
             {actionStatus.running ? (
               <>
@@ -103,25 +104,25 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
         <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           {/* Quick Stats Grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-            <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '10px' }}>
+            <div style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '10px' }}>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-subtle)' }}>CPU Load</div>
-              <div style={{ fontSize: '1.3rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: process.cpu > 20 ? '#fb7185' : '#22d3ee' }}>
+              <div style={{ fontSize: '1.3rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: process.cpu > 20 ? '#fb7185' : 'var(--text-main)' }}>
                 {process.cpu.toFixed(1)}%
               </div>
               <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>4 active threads</div>
             </div>
 
-            <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '10px' }}>
+            <div style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '10px' }}>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-subtle)' }}>Resident Memory</div>
-              <div style={{ fontSize: '1.3rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: '#a78bfa' }}>
+              <div style={{ fontSize: '1.3rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--text-main)' }}>
                 {process.ram > 1024 ? `${(process.ram / 1024).toFixed(2)} GB` : `${process.ram} MB`}
               </div>
               <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>VMS: 5.2 GB</div>
             </div>
 
-            <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '10px' }}>
+            <div style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '10px' }}>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-subtle)' }}>Disk Throughput</div>
-              <div style={{ fontSize: '1.3rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: (process.disk || 0) > 40 ? '#fb7185' : '#34d399' }}>
+              <div style={{ fontSize: '1.3rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: (process.disk || 0) > 40 ? '#fb7185' : '#10b981' }}>
                 {(process.disk || 0).toFixed(1)} MB/s
               </div>
               <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>IOPS: ~{((process.disk || 0) * 15).toFixed(0)}</div>
@@ -130,18 +131,18 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
 
           {/* eBPF Syscall Trace Details */}
           <div style={{
-            background: '#05070a',
-            border: '1px solid #1e293b',
+            background: 'var(--bg-subtle)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: '8px',
             padding: '12px',
             fontSize: '0.76rem',
             fontFamily: 'var(--font-mono)'
           }}>
             <div style={{ color: 'var(--text-subtle)', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Activity size={13} color="#22d3ee" />
+              <Activity size={13} color="var(--text-muted)" />
               <span>LIVE KERNEL eBPF PROBE TELEMETRY:</span>
             </div>
-            <div style={{ color: '#94a3b8', lineHeight: '1.6' }}>
+            <div style={{ color: 'var(--text-muted)', lineHeight: '1.6' }}>
               <div>• CPU scheduler quota: cpu.max = "max 100000"</div>
               <div>• Open socket descriptors: 28 TCP connections (0 TIME_WAIT)</div>
               <div>• Page faults rate: {process.status === 'culprit' ? '1,420 faults/s (ELEVATED)' : '14 faults/s (Normal)'}</div>
@@ -161,7 +162,7 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
                 style={{ fontSize: '0.78rem', padding: '6px 12px' }}
                 onClick={() => handleAction('cgroup CPU Throttling (-50%)')}
               >
-                <Cpu size={13} color="#06b6d4" />
+                <Cpu size={13} color="var(--text-muted)" />
                 Throttle CPU cgroup (-50%)
               </button>
 
@@ -171,7 +172,7 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
                 style={{ fontSize: '0.78rem', padding: '6px 12px' }}
                 onClick={() => handleAction('Release Transient Buffer Cache')}
               >
-                <HardDrive size={13} color="#a855f7" />
+                <HardDrive size={13} color="var(--text-muted)" />
                 Evict Heap / Cache
               </button>
 
@@ -194,7 +195,7 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
           borderTop: '1px solid var(--border-subtle)',
           display: 'flex',
           justifyContent: 'flex-end',
-          background: 'rgba(15, 23, 42, 0.4)'
+          background: 'var(--bg-subtle)'
         }}>
           <button
             type="button"

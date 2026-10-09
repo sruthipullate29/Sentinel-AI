@@ -1,12 +1,12 @@
 import React from 'react';
-import { 
-  Layers, 
-  Workflow, 
-  Database, 
-  ShieldCheck, 
-  Activity, 
-  Cpu, 
-  TrendingUp, 
+import {
+  Layers,
+  Workflow,
+  Database,
+  ShieldCheck,
+  Activity,
+  Cpu,
+  TrendingUp,
   Sparkles,
   GitBranch,
   Terminal,
@@ -18,22 +18,22 @@ export default function ArchitectureView() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       {/* Banner */}
-      <div className="glass-panel" style={{ padding: '1.5rem', background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(15, 21, 35, 0.9))', borderColor: 'rgba(139, 92, 246, 0.25)' }}>
+      <div className="glass-panel" style={{ padding: '1.5rem', background: 'var(--bg-card)', borderColor: 'var(--border-subtle)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{
             width: '42px',
             height: '42px',
             borderRadius: '10px',
-            background: 'rgba(139, 92, 246, 0.15)',
-            border: '1px solid rgba(139, 92, 246, 0.4)',
+            background: 'var(--bg-subtle)',
+            border: '1px solid var(--border-subtle)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
-            <Workflow size={22} color="#c084fc" />
+            <Workflow size={22} color="var(--text-main)" />
           </div>
           <div>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
               SentinelAI Architecture & Continuous Learning Loop
             </h2>
             <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '2px' }}>
@@ -44,16 +44,16 @@ export default function ArchitectureView() {
       </div>
 
       {/* The 8 Stages Detailed Breakdown */}
-      <div className="glass-panel" style={{ padding: '1.5rem' }}>
-        <h3 style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Layers size={18} color="#22d3ee" />
+      <div className="glass-panel" style={{ padding: '1.5rem', background: 'var(--bg-card)', borderColor: 'var(--border-subtle)' }}>
+        <h3 style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-main)' }}>
+          <Layers size={18} color="var(--text-muted)" />
           The 8 Stages of the Continuous Learning Engine
         </h3>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
           {LEARNING_LOOP_STEPS.map((step, idx) => (
             <div key={step.id} style={{
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: 'var(--bg-subtle)',
               border: '1px solid var(--border-subtle)',
               borderRadius: '10px',
               padding: '1rem',
@@ -62,10 +62,10 @@ export default function ArchitectureView() {
               gap: '6px'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span className="badge badge-cyan" style={{ fontSize: '0.68rem' }}>
+                <span className="badge badge-zinc" style={{ fontSize: '0.68rem' }}>
                   Stage {idx + 1}
                 </span>
-                <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#f8fafc' }}>
+                <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-main)' }}>
                   {step.label}
                 </span>
               </div>

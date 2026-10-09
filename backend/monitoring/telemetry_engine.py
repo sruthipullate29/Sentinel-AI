@@ -26,38 +26,46 @@ class TelemetryEngine:
             time.sleep(2)
 
     def _generate_snapshot(self) -> TelemetrySnapshot:
-        cpu = psutil.cpu_percent(interval=None)
-        ram = psutil.virtual_memory().percent
-        disk = psutil.disk_usage('/').percent
+        cpu = round(psutil.cpu_percent(interval=None), 1)
+        ram = round(psutil.virtual_memory().percent, 1)
+        try:
+            disk = round(psutil.disk_usage('C:').percent, 1)
+        except Exception:
+            disk = round(psutil.disk_usage('/').percent, 1)
         
         system = ResourceMetrics(cpu=cpu, ram=ram, disk=disk)
         
         processes = []
-        for proc in psutil.process_iter(['pid', 'name', 'cpu_percent', 'memory_percent', 'status']):
+        for proc in psutil.process_iter(['pid', 'name', 'status']):
             try:
+                name = proc.info['name']
+                if not name or name == 'System Idle Process':
+                    continue
+                mem_mb = round(proc.memory_info().rss / (1024 * 1024), 1)
+                cpu_p = round(proc.cpu_percent(interval=None) or 0.0, 1)
                 processes.append(ProcessMetrics(
                     pid=proc.info['pid'],
-                    name=proc.info['name'],
-                    cpu=proc.info['cpu_percent'] or 0.0,
-                    ram=proc.info['memory_percent'] or 0.0,
-                    status=proc.info['status']
+                    name=name,
+                    cpu=cpu_p,
+                    ram=mem_mb,
+                    status=proc.info.get('status') or 'running'
                 ))
-            except (psutil.NoSuchProcess, psutil.AccessDenied):
+            except (psutil.NoSuchProcess, psutil.AccessDenied, Exception):
                 pass
                 
-        # Keep top 10 processes
-        processes = sorted(processes, key=lambda x: x.cpu, reverse=True)[:10]
+        # Sort by resident memory (RAM) descending, then take top 10 real active processes
+        processes = sorted(processes, key=lambda x: (x.cpu, x.ram), reverse=True)[:10]
         
-        # Simple risk calculation
-        risk_score = 0
+        # Risk calculation based on real system load
+        risk_score = 12
         if cpu > 80:
-            risk_score += 40
+            risk_score += 45
         elif cpu > 50:
-            risk_score += 20
+            risk_score += 25
             
         if ram > 85:
             risk_score += 40
-        elif ram > 60:
+        elif ram > 65:
             risk_score += 20
             
         return TelemetrySnapshot(
@@ -65,7 +73,7 @@ class TelemetryEngine:
             system=system,
             processes=processes,
             risk_score=min(100, risk_score),
-            anomaly_signals=["High CPU Utilization"] if cpu > 80 else []
+            anomaly_signals=["High Host Memory Utilization"] if ram > 85 else []
         )
 
     def get_latest_snapshot(self) -> TelemetrySnapshot:

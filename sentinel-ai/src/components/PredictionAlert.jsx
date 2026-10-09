@@ -166,7 +166,7 @@ export default function PredictionAlert({
           
           <button
             type="button"
-            className="btn-primary-action glow-cyan"
+            className="btn-primary-action"
             onClick={onApproveAction}
           >
             <ShieldCheck size={16} />
