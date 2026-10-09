@@ -85,8 +85,8 @@ export default function ArchitectureView() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem' }}>
           {/* Traditional */}
-          <div style={{ background: 'rgba(244, 63, 94, 0.05)', border: '1px solid rgba(244, 63, 94, 0.2)', borderRadius: '10px', padding: '1.25rem' }}>
-            <h4 style={{ color: '#fb7185', fontSize: '0.95rem', fontWeight: 600, marginBottom: '8px' }}>
+          <div style={{ background: 'var(--rose-glow)', border: '1px solid var(--border-subtle)', borderRadius: '10px', padding: '1.25rem' }}>
+            <h4 style={{ color: 'var(--rose-bright)', fontSize: '0.95rem', fontWeight: 600, marginBottom: '8px' }}>
               Generic System Monitors (htop, Datadog agent, Task Manager)
             </h4>
             <ul style={{ fontSize: '0.8rem', color: 'var(--text-muted)', paddingLeft: '1.2rem', lineHeight: '1.6' }}>
@@ -99,8 +99,8 @@ export default function ArchitectureView() {
           </div>
 
           {/* SentinelAI */}
-          <div style={{ background: 'rgba(16, 185, 129, 0.05)', border: '1px solid rgba(16, 185, 129, 0.25)', borderRadius: '10px', padding: '1.25rem' }}>
-            <h4 style={{ color: '#34d399', fontSize: '0.95rem', fontWeight: 600, marginBottom: '8px' }}>
+          <div style={{ background: 'var(--emerald-glow)', border: '1px solid var(--border-subtle)', borderRadius: '10px', padding: '1.25rem' }}>
+            <h4 style={{ color: 'var(--emerald-bright)', fontSize: '0.95rem', fontWeight: 600, marginBottom: '8px' }}>
               SentinelAI Self-Learning Reliability Agent
             </h4>
             <ul style={{ fontSize: '0.8rem', color: 'var(--text-muted)', paddingLeft: '1.2rem', lineHeight: '1.6' }}>

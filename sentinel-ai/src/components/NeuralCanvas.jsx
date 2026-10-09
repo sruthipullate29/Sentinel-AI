@@ -51,8 +51,8 @@ export default function NeuralCanvas() {
             vx: (Math.random() - 0.5) * 0.9,
             vy: (Math.random() - 0.5) * 0.9 - 0.15,
             radius: Math.random() * 1.5 + 0.8,
-            alpha: isLt ? 0.22 : 0.38,
-            color: isLt ? '100, 116, 139' : '165, 180, 252'
+            alpha: isLt ? 0.20 : 0.30,
+            color: isLt ? '120, 120, 130' : '230, 230, 235'
           });
         }
       }
@@ -128,16 +128,16 @@ export default function NeuralCanvas() {
         );
 
         if (isLightNow) {
-          // Light mode: very subtle gray-blue tint
-          cursorGrad.addColorStop(0, 'rgba(99, 102, 241, 0.04)');
-          cursorGrad.addColorStop(0.4, 'rgba(99, 102, 241, 0.015)');
-          cursorGrad.addColorStop(1, 'rgba(99, 102, 241, 0)');
+          // Light mode: very subtle warm gray tint
+          cursorGrad.addColorStop(0, 'rgba(0, 0, 0, 0.025)');
+          cursorGrad.addColorStop(0.4, 'rgba(0, 0, 0, 0.01)');
+          cursorGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
         } else {
-          // Dark mode: premium indigo spotlight
-          cursorGrad.addColorStop(0, 'rgba(129, 140, 248, 0.12)');
-          cursorGrad.addColorStop(0.35, 'rgba(129, 140, 248, 0.05)');
-          cursorGrad.addColorStop(0.70, 'rgba(129, 140, 248, 0.015)');
-          cursorGrad.addColorStop(1, 'rgba(129, 140, 248, 0)');
+          // Dark mode: soft warm neutral spotlight (no blue/indigo)
+          cursorGrad.addColorStop(0, 'rgba(255, 255, 255, 0.05)');
+          cursorGrad.addColorStop(0.35, 'rgba(255, 255, 255, 0.02)');
+          cursorGrad.addColorStop(0.70, 'rgba(255, 255, 255, 0.008)');
+          cursorGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
         }
 
         ctx.fillStyle = cursorGrad;
@@ -151,9 +151,9 @@ export default function NeuralCanvas() {
           smoothMouse.x, smoothMouse.y, 30
         );
         if (isLightNow) {
-          innerGlow.addColorStop(0, 'rgba(99, 102, 241, 0.08)');
+          innerGlow.addColorStop(0, 'rgba(0, 0, 0, 0.04)');
         } else {
-          innerGlow.addColorStop(0, 'rgba(165, 180, 252, 0.18)');
+          innerGlow.addColorStop(0, 'rgba(255, 255, 255, 0.10)');
         }
         innerGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
@@ -241,15 +241,15 @@ export default function NeuralCanvas() {
         ctx.arc(p.x, p.y, currentRadius, 0, Math.PI * 2);
 
         if (isNearCursor) {
-          // Near cursor: accent color highlight
+          // Near cursor: soft neutral highlight
           ctx.fillStyle = isLight
-            ? `rgba(99, 102, 241, ${Math.min(0.45, 0.12 + extraGlow * 0.32)})`
-            : `rgba(165, 180, 252, ${Math.min(0.55, 0.15 + extraGlow * 0.38)})`;
+            ? `rgba(120, 120, 130, ${Math.min(0.35, 0.10 + extraGlow * 0.25)})`
+            : `rgba(240, 240, 245, ${Math.min(0.45, 0.12 + extraGlow * 0.30)})`;
         } else {
           // Default: muted neutral
           ctx.fillStyle = isLight
-            ? `rgba(148, 163, 184, ${p.baseAlpha * 0.75})`
-            : `rgba(139, 143, 168, ${p.baseAlpha})`;
+            ? `rgba(148, 163, 184, ${p.baseAlpha * 0.70})`
+            : `rgba(160, 163, 175, ${p.baseAlpha * 0.85})`;
         }
         ctx.fill();
 
@@ -260,28 +260,28 @@ export default function NeuralCanvas() {
           const maxDist = 115;
 
           if (distBetween < maxDist) {
-            const linkAlpha = (1 - distBetween / maxDist) * (isLight ? 0.06 : 0.09);
+            const linkAlpha = (1 - distBetween / maxDist) * (isLight ? 0.05 : 0.07);
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
             ctx.strokeStyle = isLight
               ? `rgba(148, 163, 184, ${linkAlpha})`
-              : `rgba(139, 143, 168, ${linkAlpha})`;
+              : `rgba(160, 163, 175, ${linkAlpha})`;
             ctx.lineWidth = 0.7;
             ctx.stroke();
           }
         }
 
-        // Indigo accent link to cursor when hovered
+        // Soft neutral link to cursor when hovered
         if (distToMouse < mouseRadius) {
-          const cursorLinkAlpha = (1 - distToMouse / mouseRadius) * (isLight ? 0.1 : 0.16);
+          const cursorLinkAlpha = (1 - distToMouse / mouseRadius) * (isLight ? 0.08 : 0.12);
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(smoothMouse.x, smoothMouse.y);
           ctx.strokeStyle = isLight
-            ? `rgba(99, 102, 241, ${cursorLinkAlpha})`
-            : `rgba(165, 180, 252, ${cursorLinkAlpha})`;
-          ctx.lineWidth = 0.85;
+            ? `rgba(120, 120, 130, ${cursorLinkAlpha})`
+            : `rgba(240, 240, 245, ${cursorLinkAlpha})`;
+          ctx.lineWidth = 0.80;
           ctx.stroke();
         }
       }

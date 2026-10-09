@@ -76,9 +76,9 @@ export default function PredictiveHorizonScrubber({
 
         <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
           {isAnomalous ? (
-            <span style={{ color: '#ef4444' }}>⚠ Trajectory: Velocity Vector Escalating</span>
+            <span style={{ color: 'var(--rose-bright)' }}>⚠ Trajectory: Velocity Vector Escalating</span>
           ) : (
-            <span style={{ color: '#10b981' }}>✓ Trajectory: Steady-State Equilibrium</span>
+            <span style={{ color: 'var(--emerald-primary)' }}>✓ Trajectory: Steady-State Equilibrium</span>
           )}
         </div>
       </div>
@@ -106,9 +106,9 @@ export default function PredictiveHorizonScrubber({
 
           if (isSelected) {
             if (isDanger) {
-              pillBg = 'rgba(239, 68, 68, 0.12)';
-              pillBorder = '1px solid rgba(239, 68, 68, 0.35)';
-              pillColor = '#ef4444';
+              pillBg = 'var(--rose-glow)';
+              pillBorder = '1px solid var(--border-subtle)';
+              pillColor = 'var(--rose-bright)';
             } else {
               pillBg = 'var(--bg-card)';
               pillBorder = '1px solid var(--border-subtle)';
@@ -164,12 +164,12 @@ export default function PredictiveHorizonScrubber({
               fontSize: '1.4rem',
               fontWeight: 700,
               fontFamily: 'var(--font-mono)',
-              color: projectedCpu > 80 ? '#ef4444' : 'var(--text-main)'
+              color: projectedCpu > 80 ? 'var(--rose-bright)' : 'var(--text-main)'
             }}>
               {projectedCpu.toFixed(1)}%
             </span>
             {horizonOffset > 0 && isAnomalous && (
-              <span style={{ fontSize: '0.72rem', color: '#ef4444', fontWeight: 600 }}>
+              <span style={{ fontSize: '0.72rem', color: 'var(--rose-bright)', fontWeight: 600 }}>
                 (+{(projectedCpu - currentScenario.metrics.cpu).toFixed(0)}% projected)
               </span>
             )}
@@ -191,12 +191,12 @@ export default function PredictiveHorizonScrubber({
               fontSize: '1.4rem',
               fontWeight: 700,
               fontFamily: 'var(--font-mono)',
-              color: projectedRam > 85 ? '#ef4444' : 'var(--text-main)'
+              color: projectedRam > 85 ? 'var(--rose-bright)' : 'var(--text-main)'
             }}>
               {projectedRam.toFixed(1)}%
             </span>
             {horizonOffset > 0 && isAnomalous && (
-              <span style={{ fontSize: '0.72rem', color: '#ef4444', fontWeight: 600 }}>
+              <span style={{ fontSize: '0.72rem', color: 'var(--rose-bright)', fontWeight: 600 }}>
                 ({((projectedRam / 100) * 32).toFixed(1)} GB used)
               </span>
             )}

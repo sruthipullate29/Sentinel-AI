@@ -35,23 +35,23 @@ export default function PredictionAlert({
             width: '42px',
             height: '42px',
             borderRadius: '10px',
-            background: 'rgba(244, 63, 94, 0.2)',
-            border: '1px solid rgba(244, 63, 94, 0.5)',
+            background: 'rgba(244, 63, 94, 0.12)',
+            border: '1px solid rgba(244, 63, 94, 0.28)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
-            <AlertTriangle size={24} color="#f43f5e" />
+            <AlertTriangle size={24} color="var(--rose-primary)" />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span className="badge badge-rose">Early Anomaly Warning</span>
-              <span style={{ fontSize: '0.78rem', color: '#fda4af', display: 'flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-mono)' }}>
+              <span style={{ fontSize: '0.78rem', color: 'var(--rose-bright)', display: 'flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-mono)' }}>
                 <Clock size={12} />
                 Projected host lockup in: <strong>{predictedIncident.timeToExhaustion}</strong>
               </span>
             </div>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '4px 0 0 0', color: '#fff' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '4px 0 0 0', color: 'var(--text-main)' }}>
               {predictedIncident.title}
             </h2>
           </div>
@@ -71,7 +71,8 @@ export default function PredictionAlert({
       <div style={{ 
         margin: '1rem 0', 
         padding: '0.75rem 1rem', 
-        background: 'rgba(0, 0, 0, 0.25)', 
+        background: 'var(--bg-subtle)', 
+        border: '1px solid var(--border-subtle)',
         borderRadius: '8px',
         display: 'flex',
         alignItems: 'center',
@@ -81,7 +82,7 @@ export default function PredictionAlert({
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Primary Contributing Process:</span>
-          <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#f8fafc' }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-main)' }}>
             {predictedIncident.culpritName}
           </span>
         </div>
@@ -94,12 +95,12 @@ export default function PredictionAlert({
       <div className="hindsight-match-box">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <BrainCircuit size={18} color="#a855f7" />
-            <span style={{ fontWeight: 700, fontSize: '0.88rem', color: '#c084fc' }}>
+            <BrainCircuit size={18} color="var(--accent-primary)" />
+            <span style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--text-main)' }}>
               Hindsight Episodic Memory Recall
             </span>
           </div>
-          <span className="badge badge-violet" style={{ fontSize: '0.72rem' }}>
+          <span className="badge badge-zinc" style={{ fontSize: '0.72rem' }}>
             {predictedIncident.similarityScore}% Pattern Match ({predictedIncident.hindsightMatchId})
           </span>
         </div>
@@ -107,11 +108,11 @@ export default function PredictionAlert({
         <blockquote style={{
           margin: '0.5rem 0',
           padding: '0.6rem 0.9rem',
-          background: 'rgba(139, 92, 246, 0.1)',
-          borderLeft: '3px solid #8b5cf6',
+          background: 'var(--bg-subtle)',
+          borderLeft: '3px solid var(--accent-primary)',
           borderRadius: '0 8px 8px 0',
           fontSize: '0.92rem',
-          color: '#e2e8f0',
+          color: 'var(--text-main)',
           lineHeight: '1.5'
         }}>
           "{predictedIncident.hindsightExplanation}"
@@ -126,12 +127,12 @@ export default function PredictionAlert({
             color: 'var(--text-muted)',
             marginTop: '8px',
             paddingTop: '8px',
-            borderTop: '1px solid rgba(139, 92, 246, 0.2)'
+            borderTop: '1px solid var(--border-subtle)'
           }}>
             <span>Previously verified on: <strong>{matchedHistorical.timestamp.split(' ')[0]}</strong></span>
-            <span>Historical CPU Delta: <strong style={{ color: '#34d399' }}>{matchedHistorical.deltaCpu}%</strong></span>
-            <span>Effectiveness: <strong style={{ color: '#34d399' }}>{matchedHistorical.effectivenessScore}%</strong></span>
-            <span style={{ color: '#a78bfa' }}>✓ User Approved</span>
+            <span>Historical CPU Delta: <strong style={{ color: 'var(--emerald-primary)' }}>{matchedHistorical.deltaCpu}%</strong></span>
+            <span>Effectiveness: <strong style={{ color: 'var(--emerald-primary)' }}>{matchedHistorical.effectivenessScore}%</strong></span>
+            <span style={{ color: 'var(--accent-primary)' }}>✓ User Approved</span>
           </div>
         )}
       </div>
@@ -149,7 +150,7 @@ export default function PredictionAlert({
           <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             Safe Optimization Recommended:
           </div>
-          <div style={{ fontWeight: 600, color: '#38bdf8', fontSize: '0.92rem', marginTop: '2px' }}>
+          <div style={{ fontWeight: 600, color: 'var(--accent-primary)', fontSize: '0.92rem', marginTop: '2px' }}>
             {predictedIncident.recommendedAction}
           </div>
         </div>
@@ -177,7 +178,7 @@ export default function PredictionAlert({
 
       {/* Collapsible Execution Steps Preview */}
       {showSteps && (
-        <div style={{ marginTop: '1rem', background: '#05070a', borderRadius: '8px', padding: '12px', border: '1px solid #1e293b' }}>
+        <div style={{ marginTop: '1rem', background: 'var(--bg-inset)', borderRadius: '8px', padding: '12px', border: '1px solid var(--border-subtle)' }}>
           <div style={{ fontSize: '0.76rem', color: 'var(--text-subtle)', marginBottom: '8px', fontFamily: 'var(--font-mono)' }}>
             NON-DESTRUCTIVE EXECUTION PLAN (SANDBOXED):
           </div>
@@ -188,10 +189,10 @@ export default function PredictionAlert({
               gap: '8px', 
               fontSize: '0.8rem', 
               fontFamily: 'var(--font-mono)',
-              color: '#94a3b8',
+              color: 'var(--text-muted)',
               padding: '3px 0'
             }}>
-              <span style={{ color: '#06b6d4' }}>$</span>
+              <span style={{ color: 'var(--accent-primary)' }}>$</span>
               <span>{step}</span>
             </div>
           ))}

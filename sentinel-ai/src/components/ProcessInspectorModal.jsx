@@ -41,13 +41,13 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
               width: '36px',
               height: '36px',
               borderRadius: '8px',
-              background: process.status === 'culprit' ? 'rgba(244, 63, 94, 0.15)' : 'var(--bg-subtle)',
+              background: process.status === 'culprit' ? 'var(--rose-glow)' : 'var(--bg-subtle)',
               border: '1px solid var(--border-subtle)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <Terminal size={18} color={process.status === 'culprit' ? '#fb7185' : 'var(--text-main)'} />
+              <Terminal size={18} color={process.status === 'culprit' ? 'var(--rose-bright)' : 'var(--text-main)'} />
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -77,8 +77,8 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
         {actionStatus && (
           <div style={{
             padding: '10px 1.5rem',
-            background: actionStatus.running ? 'rgba(245, 158, 11, 0.12)' : 'rgba(16, 185, 129, 0.12)',
-            borderBottom: `1px solid ${actionStatus.running ? 'rgba(245, 158, 11, 0.3)' : 'rgba(16, 185, 129, 0.3)'}`,
+            background: actionStatus.running ? 'var(--amber-glow)' : 'var(--emerald-glow)',
+            borderBottom: `1px solid ${actionStatus.running ? 'rgba(245, 158, 11, 0.25)' : 'rgba(16, 185, 129, 0.25)'}`,
             fontSize: '0.8rem',
             fontFamily: 'var(--font-mono)',
             display: 'flex',
@@ -88,12 +88,12 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
           }}>
             {actionStatus.running ? (
               <>
-                <RefreshCw size={14} className="spin" color="#fbbf24" />
+                <RefreshCw size={14} className="spin" color="var(--amber-primary)" />
                 <span>Applying non-destructive cgroup constraint: {actionStatus.name}...</span>
               </>
             ) : (
               <>
-                <CheckCircle2 size={14} color="#34d399" />
+                <CheckCircle2 size={14} color="var(--emerald-primary)" />
                 <span>{actionStatus.message}</span>
               </>
             )}
@@ -106,7 +106,7 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
             <div style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '10px' }}>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-subtle)' }}>CPU Load</div>
-              <div style={{ fontSize: '1.3rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: process.cpu > 20 ? '#fb7185' : 'var(--text-main)' }}>
+              <div style={{ fontSize: '1.3rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: process.cpu > 20 ? 'var(--rose-bright)' : 'var(--text-main)' }}>
                 {process.cpu.toFixed(1)}%
               </div>
               <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>4 active threads</div>
@@ -122,7 +122,7 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
 
             <div style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '10px' }}>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-subtle)' }}>Disk Throughput</div>
-              <div style={{ fontSize: '1.3rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: (process.disk || 0) > 40 ? '#fb7185' : '#10b981' }}>
+              <div style={{ fontSize: '1.3rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: (process.disk || 0) > 40 ? 'var(--rose-bright)' : 'var(--emerald-primary)' }}>
                 {(process.disk || 0).toFixed(1)} MB/s
               </div>
               <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>IOPS: ~{((process.disk || 0) * 15).toFixed(0)}</div>
@@ -182,7 +182,7 @@ export default function ProcessInspectorModal({ process, onClose, onApplyAction 
                 style={{ fontSize: '0.78rem', padding: '6px 12px' }}
                 onClick={() => handleAction('Warm Process Isolate Recycle')}
               >
-                <RefreshCw size={13} color="#10b981" />
+                <RefreshCw size={13} color="var(--emerald-primary)" />
                 Warm Thread Recycle
               </button>
             </div>

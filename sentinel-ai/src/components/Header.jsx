@@ -224,7 +224,7 @@ export default function Header({
           <div>
             <div className="brand-title">
               SentinelAI
-              <span className="badge badge-purple" style={{ fontSize: '0.65rem', padding: '1px 8px' }}>
+              <span className="badge badge-zinc" style={{ fontSize: '0.65rem', padding: '1px 8px' }}>
                 Self-Learning
               </span>
             </div>
@@ -242,7 +242,7 @@ export default function Header({
             onClick={() => handleTabChange('live')}
             title="Press [1] to switch to Live Dashboard"
           >
-            <Activity size={15} className={activeTab === 'live' ? 'pulse-heartbeat' : ''} />
+            <Activity size={15} />
             Live Dashboard & Predictor
           </button>
           <button
@@ -276,19 +276,31 @@ export default function Header({
 
         {/* Status & Control */}
         <div className="header-controls">
-          {/* Light / Dark Theme toggle */}
-          <button
-            type="button"
-            onClick={onToggleTheme}
-            className="btn-secondary-action theme-toggle-btn"
-            title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
-            style={{ padding: '6px 11px', display: 'flex', alignItems: 'center', gap: '6px' }}
-          >
-            {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
-            <span style={{ fontSize: '0.72rem', fontWeight: 600 }}>
-              {theme === 'dark' ? 'Light' : 'Dark'}
-            </span>
-          </button>
+          {/* Dual Soft Dark & Light Theme Segmented Switcher */}
+          <div className="theme-segmented-switch" role="group" aria-label="Theme Selection">
+            <button
+              type="button"
+              className={`theme-segment-btn ${theme === 'dark' ? 'active' : ''}`}
+              onClick={() => {
+                if (theme !== 'dark') onToggleTheme();
+              }}
+              title="Soft Dark Theme (Charcoal / Slate)"
+            >
+              <Moon size={13} />
+              <span>Dark</span>
+            </button>
+            <button
+              type="button"
+              className={`theme-segment-btn ${theme === 'light' ? 'active' : ''}`}
+              onClick={() => {
+                if (theme !== 'light') onToggleTheme();
+              }}
+              title="Clean Light Theme (Linen / Cloud)"
+            >
+              <Sun size={13} />
+              <span>Light</span>
+            </button>
+          </div>
 
           {/* Cyber audio FX toggle */}
           <button
@@ -313,9 +325,9 @@ export default function Header({
             title="Real-Time System Information & Live Telemetry HUD (i)"
             style={{
               padding: '6px 9px',
-              color: showInfo ? 'var(--accent-cyan)' : undefined,
-              borderColor: showInfo ? 'rgba(6, 182, 212, 0.4)' : undefined,
-              boxShadow: showInfo ? '0 0 10px rgba(6, 182, 212, 0.25)' : undefined
+              color: showInfo ? 'var(--accent-primary)' : undefined,
+              borderColor: showInfo ? 'var(--border-active)' : undefined,
+              boxShadow: showInfo ? 'var(--shadow-sm)' : undefined
             }}
           >
             <Info size={15} />
@@ -376,11 +388,11 @@ export default function Header({
                 width: 24,
                 height: 24,
                 borderRadius: '6px',
-                background: 'rgba(6, 182, 212, 0.15)',
+                background: 'var(--accent-glow)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--accent-cyan)'
+                color: 'var(--accent-primary)'
               }}>
                 <Info size={14} />
               </div>
@@ -482,8 +494,8 @@ export default function Header({
                     transition: 'all 0.15s ease'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--accent-cyan)';
-                    e.currentTarget.style.background = 'rgba(6, 182, 212, 0.08)';
+                    e.currentTarget.style.borderColor = 'var(--accent-primary)';
+                    e.currentTarget.style.background = 'var(--accent-glow)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.borderColor = 'var(--border-subtle)';
@@ -495,11 +507,11 @@ export default function Header({
                       width: 28,
                       height: 28,
                       borderRadius: '6px',
-                      background: 'rgba(6, 182, 212, 0.12)',
+                      background: 'var(--accent-glow)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: 'var(--accent-cyan)',
+                      color: 'var(--accent-primary)',
                       flexShrink: 0
                     }}>
                       {sysTab.icon === 'globe' ? <Globe size={14} /> :
@@ -545,7 +557,7 @@ export default function Header({
                     <div style={{
                       fontWeight: 700,
                       fontSize: '0.74rem',
-                      color: (sysTab.cpu || 0) > 30 ? '#ef4444' : (sysTab.cpu || 0) > 10 ? '#f59e0b' : 'var(--accent-cyan)'
+                      color: (sysTab.cpu || 0) > 30 ? '#ef4444' : (sysTab.cpu || 0) > 10 ? '#f59e0b' : 'var(--accent-primary)'
                     }}>
                       {sysTab.cpu || 0}% CPU
                     </div>
@@ -578,12 +590,12 @@ export default function Header({
                 alignItems: 'center',
                 gap: '5px'
               }}>
-                <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent-cyan)', display: 'inline-block' }}></span>
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent-primary)', display: 'inline-block' }}></span>
                 REAL-TIME SHORTCUTS
               </span>
               <span style={{ fontSize: '0.63rem', color: 'var(--text-muted)' }}>
                 {lastKeyPressed.key ? (
-                  <span style={{ color: 'var(--accent-cyan)', fontWeight: 600 }}>
+                  <span style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>
                     LAST: [{lastKeyPressed.key}]
                   </span>
                 ) : (
@@ -595,8 +607,8 @@ export default function Header({
             {/* Live Keypress Broadcast Banner */}
             {lastKeyPressed.key && (
               <div style={{
-                background: 'rgba(6, 182, 212, 0.1)',
-                border: '1px solid rgba(6, 182, 212, 0.28)',
+                background: 'var(--accent-glow)',
+                border: '1px solid var(--accent-border)',
                 borderRadius: '6px',
                 padding: '4px 8px',
                 marginBottom: '8px',
@@ -605,10 +617,10 @@ export default function Header({
                 alignItems: 'center',
                 fontSize: '0.67rem'
               }}>
-                <span style={{ color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <span style={{ color: 'var(--accent-primary)', display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <kbd style={{
-                    background: 'var(--accent-cyan)',
-                    color: '#000',
+                    background: 'var(--accent-primary)',
+                    color: 'var(--bg-dark)',
                     padding: '0px 5px',
                     borderRadius: '3px',
                     fontWeight: 800,
@@ -689,15 +701,15 @@ export default function Header({
                   style={{
                     padding: '6px 8px',
                     fontSize: '0.67rem',
-                    background: activeKeyPulse === 'M' ? 'rgba(59, 130, 246, 0.28)' : 'var(--bg-elevated)',
+                    background: activeKeyPulse === 'M' ? 'rgba(16, 185, 129, 0.20)' : 'var(--bg-elevated)',
                     color: 'var(--text-main)',
-                    border: `1px solid ${activeKeyPulse === 'M' ? '#3b82f6' : 'var(--border-subtle)'}`,
+                    border: `1px solid ${activeKeyPulse === 'M' ? '#10b981' : 'var(--border-subtle)'}`,
                     borderRadius: '6px',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    boxShadow: activeKeyPulse === 'M' ? '0 0 10px rgba(59, 130, 246, 0.45)' : 'none',
+                    boxShadow: activeKeyPulse === 'M' ? '0 0 10px rgba(16, 185, 129, 0.25)' : 'none',
                     transition: 'all 0.15s ease'
                   }}
                 >
@@ -773,15 +785,15 @@ export default function Header({
                   style={{
                     padding: '6px 8px',
                     fontSize: '0.67rem',
-                    background: activeKeyPulse === 'T' ? 'rgba(168, 85, 247, 0.28)' : 'var(--bg-elevated)',
+                    background: activeKeyPulse === 'T' ? 'var(--accent-glow)' : 'var(--bg-elevated)',
                     color: 'var(--text-main)',
-                    border: `1px solid ${activeKeyPulse === 'T' ? '#a855f7' : 'var(--border-subtle)'}`,
+                    border: `1px solid ${activeKeyPulse === 'T' ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
                     borderRadius: '6px',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    boxShadow: activeKeyPulse === 'T' ? '0 0 10px rgba(168, 85, 247, 0.45)' : 'none',
+                    boxShadow: activeKeyPulse === 'T' ? '0 0 10px var(--accent-glow)' : 'none',
                     transition: 'all 0.15s ease'
                   }}
                 >
@@ -791,7 +803,7 @@ export default function Header({
                   </span>
                   <span style={{
                     fontSize: '0.61rem',
-                    color: 'var(--accent-purple)',
+                    color: 'var(--text-muted)',
                     fontWeight: 600
                   }}>
                     {theme.toUpperCase()}

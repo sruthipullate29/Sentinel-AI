@@ -180,7 +180,7 @@ export default function CognitiveStream({ systemStatus, currentScenario, activeS
                 <span style={{
                   color: getTagColor(log.tag),
                   fontWeight: 700,
-                  background: 'rgba(255, 255, 255, 0.04)',
+                  background: 'var(--border-subtle)',
                   padding: '0 4px',
                   borderRadius: '3px'
                 }}>

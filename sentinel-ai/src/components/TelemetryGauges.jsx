@@ -62,7 +62,7 @@ export default function TelemetryGauges({ metrics, history, anomalyRisk }) {
             <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600 }}>Monthly Workload</div>
             <div style={{ fontSize: '0.7rem', color: 'var(--text-subtle)' }}>Total Process Thread Pool</div>
           </div>
-          <span className="badge badge-purple" style={{ fontSize: '0.68rem' }}>
+          <span className="badge badge-zinc" style={{ fontSize: '0.68rem' }}>
             14C / 20T • i7-12700H
           </span>
         </div>
@@ -94,7 +94,7 @@ export default function TelemetryGauges({ metrics, history, anomalyRisk }) {
 
         <div className="metric-footer" style={{ marginTop: '8px' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Flame size={12} color={metrics.temp > 80 ? '#ef4444' : 'var(--text-muted)'} />
+            <Flame size={12} color={metrics.temp > 80 ? 'var(--rose-primary)' : 'var(--text-muted)'} />
             Pkg Temp: {metrics.temp}°C
           </span>
           <span>Active Capacity: 1.3M ops</span>
@@ -142,7 +142,7 @@ export default function TelemetryGauges({ metrics, history, anomalyRisk }) {
             <span className="metric-title" style={{ color: 'var(--text-muted)' }}>
               Real-time
             </span>
-            <span className="badge badge-purple" style={{ fontSize: '0.66rem' }}>
+            <span className="badge badge-zinc" style={{ fontSize: '0.66rem' }}>
               LIVE PROBE
             </span>
           </div>
@@ -188,7 +188,7 @@ export default function TelemetryGauges({ metrics, history, anomalyRisk }) {
             <HardDrive size={16} color="var(--text-muted)" />
             System Memory (RAM)
           </span>
-          <span className="badge badge-indigo" style={{ fontSize: '0.68rem' }}>
+          <span className="badge badge-zinc" style={{ fontSize: '0.68rem' }}>
             16 GB DDR5
           </span>
         </div>

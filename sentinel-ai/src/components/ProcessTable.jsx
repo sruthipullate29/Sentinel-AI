@@ -20,7 +20,7 @@ export default function ProcessTable({ processes, onInspectProcess }) {
         );
       default:
         return (
-          <span className="badge badge-cyan">
+          <span className="badge badge-emerald">
             <CheckCircle2 size={11} />
             Nominal
           </span>
@@ -33,14 +33,14 @@ export default function ProcessTable({ processes, onInspectProcess }) {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
         <div>
           <h3 style={{ fontSize: '1rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Layers size={18} color="#22d3ee" />
+            <Layers size={18} color="var(--text-main)" />
             Active Application Telemetry & Contribution Ranking
           </h3>
           <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
             Continuous per-process telemetry monitored by SentinelAI kernel eBPF probe
           </p>
         </div>
-        <span className="badge badge-violet" style={{ fontSize: '0.72rem' }}>
+        <span className="badge badge-zinc" style={{ fontSize: '0.72rem' }}>
           Real-time Process Tree
         </span>
       </div>
@@ -69,16 +69,16 @@ export default function ProcessTable({ processes, onInspectProcess }) {
                         width: '28px',
                         height: '28px',
                         borderRadius: '6px',
-                        background: isCulprit ? 'rgba(244, 63, 94, 0.2)' : 'rgba(255, 255, 255, 0.05)',
+                        background: isCulprit ? 'rgba(244, 63, 94, 0.12)' : 'var(--bg-subtle)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        border: isCulprit ? '1px solid rgba(244, 63, 94, 0.5)' : '1px solid var(--border-subtle)'
+                        border: isCulprit ? '1px solid rgba(244, 63, 94, 0.3)' : '1px solid var(--border-subtle)'
                       }}>
-                        <Terminal size={14} color={isCulprit ? '#fb7185' : '#94a3b8'} />
+                        <Terminal size={14} color={isCulprit ? 'var(--rose-bright)' : 'var(--text-muted)'} />
                       </div>
                       <div>
-                        <div style={{ fontWeight: 600, color: isCulprit ? '#fff' : 'var(--text-main)' }}>
+                        <div style={{ fontWeight: 600, color: isCulprit ? 'var(--rose-bright)' : 'var(--text-main)' }}>
                           {proc.name}
                         </div>
                         <div style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>
@@ -92,17 +92,17 @@ export default function ProcessTable({ processes, onInspectProcess }) {
                   </td>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <div style={{ width: '70px', height: '6px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '999px', overflow: 'hidden' }}>
+                      <div style={{ width: '70px', height: '6px', background: 'var(--border-subtle)', borderRadius: '999px', overflow: 'hidden' }}>
                         <div style={{
                           height: '100%',
                           width: `${Math.min(100, proc.cpu)}%`,
-                          background: isCulprit ? '#f43f5e' : (proc.cpu > 15 ? '#f59e0b' : '#06b6d4')
+                          background: isCulprit ? 'var(--rose-primary)' : (proc.cpu > 15 ? 'var(--amber-primary)' : 'var(--accent-primary)')
                         }} />
                       </div>
                       <span style={{ 
                         fontFamily: 'var(--font-mono)', 
                         fontWeight: 600,
-                        color: isCulprit ? '#fb7185' : 'inherit'
+                        color: isCulprit ? 'var(--rose-bright)' : 'inherit'
                       }}>
                         {proc.cpu.toFixed(1)}%
                       </span>
@@ -113,7 +113,7 @@ export default function ProcessTable({ processes, onInspectProcess }) {
                       ? `${(proc.ram / 1024).toFixed(2)} GB` 
                       : `${proc.ram} MB`}
                   </td>
-                  <td style={{ fontFamily: 'var(--font-mono)', color: (proc.disk || 0) > 50 ? '#fb7185' : 'var(--text-muted)' }}>
+                  <td style={{ fontFamily: 'var(--font-mono)', color: (proc.disk || 0) > 50 ? 'var(--rose-bright)' : 'var(--text-muted)' }}>
                     {(proc.disk || 0).toFixed(1)} MB/s
                   </td>
                   <td>

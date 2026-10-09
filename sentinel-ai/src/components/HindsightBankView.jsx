@@ -311,19 +311,19 @@ export default function HindsightBankView({ incidents, onSelectIncident, onReini
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              background: 'rgba(15, 23, 42, 0.7)'
+              background: 'var(--bg-subtle)'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <div style={{
                   width: '34px',
                   height: '34px',
                   borderRadius: '8px',
-                  background: 'rgba(125, 125, 125, 0.12)',
+                  background: 'var(--accent-glow)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  <Database size={18} color="var(--text-main)" />
+                  <Database size={18} color="var(--accent-primary)" />
                 </div>
                 <div>
                   <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
@@ -353,14 +353,14 @@ export default function HindsightBankView({ incidents, onSelectIncident, onReini
                   className="metric-progress-fill" 
                   style={{ 
                     width: `${Math.min(100, (initStage / 5) * 100)}%`,
-                    backgroundColor: initStage === 6 ? '#10b981' : '#8b5cf6'
+                    backgroundColor: initStage === 6 ? 'var(--emerald-primary)' : 'var(--accent-primary)'
                   }}
                 />
               </div>
 
               {/* Progress Steps list */}
               <div className="terminal-box" style={{ maxHeight: '180px' }}>
-                <div style={{ color: '#64748b', marginBottom: '6px' }}>// SQLite Vector Storage Indexer [384-d Cosine Metric]</div>
+                <div style={{ color: 'var(--text-subtle)', marginBottom: '6px' }}>// SQLite Vector Storage Indexer [384-d Cosine Metric]</div>
                 {[
                   'Probing kernel eBPF tracepoints & sensor telemetry channels',
                   'Allocating SQLite Vector Store schema & index buffers',
@@ -371,10 +371,10 @@ export default function HindsightBankView({ incidents, onSelectIncident, onReini
                   const isDone = initStage > idx + 1 || initStage === 6;
                   const isCurrent = initStage === idx + 1;
                   return (
-                    <div key={idx} className="terminal-line" style={{ color: isDone ? '#34d399' : (isCurrent ? '#38bdf8' : '#475569') }}>
+                    <div key={idx} className="terminal-line" style={{ color: isDone ? 'var(--emerald-primary)' : (isCurrent ? 'var(--accent-primary)' : 'var(--text-subtle)') }}>
                       <span>{isDone ? '✔' : (isCurrent ? '▶' : '○')}</span>
                       <span>{step}</span>
-                      {isCurrent && <span className="pulse-dot" style={{ background: '#38bdf8' }}></span>}
+                      {isCurrent && <span className="pulse-dot" style={{ background: 'var(--accent-primary)' }}></span>}
                     </div>
                   );
                 })}
@@ -384,14 +384,14 @@ export default function HindsightBankView({ incidents, onSelectIncident, onReini
                 <div style={{
                   padding: '10px 14px',
                   borderRadius: '8px',
-                  background: 'rgba(16, 185, 129, 0.1)',
-                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  background: 'var(--emerald-glow)',
+                  border: '1px solid var(--border-subtle)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '10px'
                 }}>
-                  <CheckCircle2 size={18} color="#34d399" />
-                  <div style={{ fontSize: '0.8rem', color: '#e2e8f0' }}>
+                  <CheckCircle2 size={18} color="var(--emerald-primary)" />
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-main)' }}>
                     <strong>Initialization Complete!</strong> 4 episodic failure patterns, root causes, and proven human-approved remediations are indexed in memory.
                   </div>
                 </div>

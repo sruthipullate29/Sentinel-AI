@@ -95,23 +95,23 @@ export default function OptimizationModal({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'rgba(15, 23, 42, 0.6)'
+          background: 'var(--bg-subtle)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{
               width: '32px',
               height: '32px',
               borderRadius: '8px',
-              background: 'rgba(16, 185, 129, 0.15)',
+              background: 'var(--emerald-glow)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              border: '1px solid rgba(16, 185, 129, 0.4)'
+              border: '1px solid var(--border-subtle)'
             }}>
-              <ShieldCheck size={18} color="#34d399" />
+              <ShieldCheck size={18} color="var(--emerald-primary)" />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0 }}>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
                 Autonomous Optimization Workflow
               </h3>
               <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
@@ -121,7 +121,7 @@ export default function OptimizationModal({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className={`badge ${stage === 'act' ? 'badge-amber' : (stage === 'measure' ? 'badge-cyan' : 'badge-violet')}`}>
+            <span className={`badge ${stage === 'act' ? 'badge-amber' : (stage === 'measure' ? 'badge-zinc' : 'badge-emerald')}`}>
               Stage: {stage.toUpperCase()}
             </span>
           </div>
@@ -133,24 +133,24 @@ export default function OptimizationModal({
           {stage === 'act' && (
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem' }}>
-                <Terminal size={18} color="#06b6d4" />
-                <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>
+                <Terminal size={18} color="var(--accent-primary)" />
+                <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-main)' }}>
                   Executing Non-Destructive Safe Remediation...
                 </span>
               </div>
 
               <div className="terminal-box">
-                <div style={{ color: '#64748b', marginBottom: '8px' }}>
+                <div style={{ color: 'var(--text-subtle)', marginBottom: '8px' }}>
                   // SentinelAI Sandbox Subshell [PID 9081 - Non-destructive]
                 </div>
                 {executionSteps.map((step, idx) => {
                   const isDone = completedSteps.includes(idx);
                   const isCurrent = completedSteps.length === idx;
                   return (
-                    <div key={idx} className="terminal-line" style={{ color: isDone ? '#34d399' : (isCurrent ? '#38bdf8' : '#475569') }}>
+                    <div key={idx} className="terminal-line" style={{ color: isDone ? 'var(--emerald-primary)' : (isCurrent ? 'var(--accent-primary)' : 'var(--text-subtle)') }}>
                       <span>{isDone ? '✓' : (isCurrent ? '▶' : '○')}</span>
                       <span>{step}</span>
-                      {isCurrent && <span className="pulse-dot" style={{ background: '#38bdf8' }}></span>}
+                      {isCurrent && <span className="pulse-dot" style={{ background: 'var(--accent-primary)' }}></span>}
                     </div>
                   );
                 })}
@@ -162,8 +162,8 @@ export default function OptimizationModal({
           {stage === 'measure' && (
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem' }}>
-                <Gauge size={18} color="#34d399" />
-                <span style={{ fontWeight: 600, fontSize: '0.9rem', color: '#fff' }}>
+                <Gauge size={18} color="var(--emerald-primary)" />
+                <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-main)' }}>
                   Telemetry Verification: Before vs After Delta
                 </span>
               </div>
@@ -177,8 +177,8 @@ export default function OptimizationModal({
                 {/* CPU Comparison */}
                 <div className="glass-panel" style={{ padding: '1rem', textAlign: 'center' }}>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>HOST CPU</div>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 700, margin: '4px 0', color: '#fff' }}>
-                    {currentMetrics.cpu.toFixed(0)}% <ArrowRight size={14} style={{ display: 'inline', margin: '0 4px', color: '#64748b' }} /> {afterMetrics.cpu.toFixed(0)}%
+                  <div style={{ fontSize: '1.4rem', fontWeight: 700, margin: '4px 0', color: 'var(--text-main)' }}>
+                    {currentMetrics.cpu.toFixed(0)}% <ArrowRight size={14} style={{ display: 'inline', margin: '0 4px', color: 'var(--text-subtle)' }} /> {afterMetrics.cpu.toFixed(0)}%
                   </div>
                   <span className="badge badge-emerald">
                     {deltaCpu}% Drop
@@ -188,8 +188,8 @@ export default function OptimizationModal({
                 {/* RAM Comparison */}
                 <div className="glass-panel" style={{ padding: '1rem', textAlign: 'center' }}>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>SYSTEM RAM</div>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 700, margin: '4px 0', color: '#fff' }}>
-                    {currentMetrics.ram.toFixed(0)}% <ArrowRight size={14} style={{ display: 'inline', margin: '0 4px', color: '#64748b' }} /> {afterMetrics.ram.toFixed(0)}%
+                  <div style={{ fontSize: '1.4rem', fontWeight: 700, margin: '4px 0', color: 'var(--text-main)' }}>
+                    {currentMetrics.ram.toFixed(0)}% <ArrowRight size={14} style={{ display: 'inline', margin: '0 4px', color: 'var(--text-subtle)' }} /> {afterMetrics.ram.toFixed(0)}%
                   </div>
                   <span className="badge badge-emerald">
                     {deltaRam}% Freed
@@ -199,8 +199,8 @@ export default function OptimizationModal({
                 {/* Disk I/O */}
                 <div className="glass-panel" style={{ padding: '1rem', textAlign: 'center' }}>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>DISK I/O</div>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 700, margin: '4px 0', color: '#fff' }}>
-                    {currentMetrics.disk.toFixed(0)} <ArrowRight size={14} style={{ display: 'inline', margin: '0 4px', color: '#64748b' }} /> {afterMetrics.disk.toFixed(0)}
+                  <div style={{ fontSize: '1.4rem', fontWeight: 700, margin: '4px 0', color: 'var(--text-main)' }}>
+                    {currentMetrics.disk.toFixed(0)} <ArrowRight size={14} style={{ display: 'inline', margin: '0 4px', color: 'var(--text-subtle)' }} /> {afterMetrics.disk.toFixed(0)}
                   </div>
                   <span className="badge badge-emerald">
                     Stabilized
@@ -225,8 +225,8 @@ export default function OptimizationModal({
           {stage === 'remember' && (
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem' }}>
-                <Database size={18} color="#a855f7" />
-                <span style={{ fontWeight: 600, fontSize: '0.9rem', color: '#fff' }}>
+                <Database size={18} color="var(--accent-primary)" />
+                <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-main)' }}>
                   Committing Experience to Hindsight Episodic Memory
                 </span>
               </div>

@@ -17,7 +17,7 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
     const x = Math.round(cx + Math.cos(angle) * rx);
     const y = Math.round(cy + Math.sin(angle) * ry);
 
-    const colors = ['#38bdf8', '#10b981', '#818cf8', '#f59e0b', '#ec4899', '#6366f1'];
+    const colors = ['#71717a', '#10b981', '#a1a1aa', '#f59e0b', '#78716c', '#52525b'];
     return {
       x,
       y,
@@ -49,7 +49,7 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
             <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
               Semantic Vector Similarity Lattice
             </h3>
-            <span className="badge badge-purple" style={{ fontSize: '0.68rem' }}>
+            <span className="badge badge-zinc" style={{ fontSize: '0.68rem' }}>
               Interactive 2D Embeddings
             </span>
           </div>
@@ -60,10 +60,10 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.74rem', color: 'var(--text-muted)' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#38bdf8' }}></span> Chrome / Edge
+            <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#71717a' }}></span> Chrome / Edge
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#818cf8' }}></span> Antigravity / Node
+            <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#a1a1aa' }}></span> Antigravity / Node
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#f59e0b' }}></span> Windows OS / Shell
@@ -76,18 +76,18 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
         <div style={{
           position: 'relative',
           minHeight: '390px',
-          background: '#121215',
+          background: 'var(--bg-inset)',
           borderRadius: '12px',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
+          border: '1px solid var(--border-subtle)',
           overflow: 'hidden'
         }}>
           {/* Subtle grid background dots */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(var(--border-active) 1px, transparent 1px)',
             backgroundSize: '24px 24px',
-            opacity: 0.6
+            opacity: 0.35
           }} />
 
           <svg style={{ width: '100%', height: '100%', minHeight: '390px', position: 'relative', zIndex: 1 }}>
@@ -104,11 +104,11 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
                       y1={nodeA.pos.y}
                       x2={nodeB.pos.x}
                       y2={nodeB.pos.y}
-                      stroke={isHighlighted ? '#ffffff' : 'rgba(255, 255, 255, 0.25)'}
-                      strokeWidth={isHighlighted ? 2.5 : 1}
+                      stroke={isHighlighted ? 'var(--text-main)' : 'var(--border-subtle)'}
+                      strokeWidth={isHighlighted ? 2 : 1}
                       strokeDasharray={isHighlighted ? 'none' : '4, 4'}
                     />
-                    {/* Similarity score badge with solid dark background for 100% clarity */}
+                    {/* Similarity score badge */}
                     {isHighlighted && (
                       <g transform={`translate(${(nodeA.pos.x + nodeB.pos.x) / 2}, ${(nodeA.pos.y + nodeB.pos.y) / 2})`}>
                         <rect
@@ -117,14 +117,14 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
                           width="64"
                           height="20"
                           rx="4"
-                          fill="#090d18"
-                          stroke="#ffffff"
+                          fill="var(--bg-card)"
+                          stroke="var(--border-active)"
                           strokeWidth="1.2"
                         />
                         <text
                           x="0"
                           y="4"
-                          fill="#ffffff"
+                          fill="var(--text-main)"
                           fontSize="10"
                           fontWeight="700"
                           fontFamily="var(--font-mono)"
@@ -165,7 +165,7 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
                       fill="none"
                       stroke={pos.color}
                       strokeWidth="1.8"
-                      opacity="0.5"
+                      opacity="0.3"
                     >
                       <animate
                         attributeName="r"
@@ -175,7 +175,7 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
                       />
                       <animate
                         attributeName="opacity"
-                        values="0.6;0.1;0.6"
+                        values="0.4;0.05;0.4"
                         dur="3s"
                         repeatCount="indefinite"
                       />
@@ -187,9 +187,9 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
                     cx={pos.x}
                     cy={pos.y}
                     r={isSelected || isHovered ? 26 : 22}
-                    fill={isSelected ? pos.color : '#0f172a'}
+                    fill={isSelected ? pos.color : 'var(--bg-card)'}
                     stroke={pos.color}
-                    strokeWidth={isSelected ? 3.5 : 2}
+                    strokeWidth={isSelected ? 3 : 2}
                     style={{ transition: 'all 0.2s ease' }}
                   />
 
@@ -199,7 +199,7 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
                     y={pos.y + 1}
                     textAnchor="middle"
                     dominantBaseline="middle"
-                    fill={isSelected ? '#000' : '#ffffff'}
+                    fill={isSelected ? '#ffffff' : 'var(--text-main)'}
                     fontSize="11"
                     fontWeight="800"
                     fontFamily="var(--font-mono)"
@@ -207,7 +207,7 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
                     #{item.id.replace('INC-', '')}
                   </text>
 
-                  {/* High-Clarity Pill Badge below node — completely legible & no overlapping lines! */}
+                  {/* High-Clarity Pill Badge below node */}
                   <g transform={`translate(${pos.x}, ${pos.y + 36})`}>
                     <rect
                       x="-65"
@@ -215,15 +215,15 @@ export default function NeuralMemoryMap({ incidents, onSelectIncident }) {
                       width="130"
                       height="22"
                       rx="6"
-                      fill="#080c18"
-                      stroke={isSelected ? pos.color : 'rgba(255, 255, 255, 0.22)'}
+                      fill="var(--bg-card)"
+                      stroke={isSelected ? pos.color : 'var(--border-subtle)'}
                       strokeWidth={isSelected ? '1.5' : '1'}
                     />
                     <text
                       x="0"
                       y="4"
                       textAnchor="middle"
-                      fill="#ffffff"
+                      fill="var(--text-main)"
                       fontSize="11"
                       fontWeight="600"
                       fontFamily="var(--font-sans)"
