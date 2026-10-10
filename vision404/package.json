@@ -1,0 +1,42 @@
+{
+  "name": "vision404",
+  "version": "1.0.0",
+  "description": "Vision404 — Self-Learning System Reliability Agent with Hindsight Episodic Memory",
+  "type": "module",
+  "bin": {
+    "vision404": "./bin/vision404.js"
+  },
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "lint": "oxlint",
+    "preview": "vite preview --host 0.0.0.0",
+    "start": "node ./bin/vision404.js",
+    "hindsight:init": "node ./bin/init-hindsight.js",
+    "docker:build": "docker build -t vision404 .",
+    "docker:run": "docker run -d -p 5173:80 --name vision404-agent vision404",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down"
+  },
+  "keywords": [
+    "system-monitor",
+    "reliability-agent",
+    "hindsight-memory",
+    "observability",
+    "ai-agent",
+    "self-learning"
+  ],
+  "dependencies": {
+    "lucide-react": "^1.48.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "scheduler": "^0.28.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "oxlint": "^1.81.0",
+    "vite": "^6.4.3"
+  }
+}

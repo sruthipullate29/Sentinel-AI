@@ -1,4 +1,4 @@
-# SentinelAI Implementation Audit
+# Vision404 Implementation Audit
 
 ## WORKING
 - **Frontend UI Shell**: The React/Vite frontend implemented by Sruthi is working and visually complete.
@@ -30,7 +30,7 @@
 ## DOCKER GAP
 - The backend needs a `Dockerfile` and `requirements.txt`.
 - The frontend needs to be connected to the backend via proxy or correct environment variables.
-- We need a disposable Docker workload (e.g., `sentinelai-demo-workload`) to demonstrate the resource pressure and action execution safely.
+- We need a disposable Docker workload (e.g., `vision404-demo-workload`) to demonstrate the resource pressure and action execution safely.
 
 ## RISK ASSESSMENT
 - **Fake Memories**: The UI is generating fake memories, which violates the absolute rule of the specification.

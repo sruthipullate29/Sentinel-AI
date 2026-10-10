@@ -1,1 +1,1 @@
-docker run -d --rm --name sentinelai-demo-workload progrium/stress --cpu 4 --timeout 300
+docker run -d --rm --name vision404-demo-workload progrium/stress --cpu 4 --timeout 300

@@ -4,7 +4,7 @@ services:
   # ── Vectorize Hindsight (local memory engine) ─────────────────────────────
   hindsight:
     image: vectorize/hindsight:latest
-    container_name: sentinelai-hindsight
+    container_name: vision404-hindsight
     ports:
       - "8888:8888"
     volumes:
@@ -13,12 +13,12 @@ services:
       - HINDSIGHT_STORAGE_PATH=/data
     restart: unless-stopped
 
-  # ── SentinelAI Backend ────────────────────────────────────────────────────
+  # ── Vision404 Backend ────────────────────────────────────────────────────
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: sentinelai-backend
+    container_name: vision404-backend
     ports:
       - "8000:8000"
     volumes:
@@ -26,7 +26,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - HINDSIGHT_API_URL=http://hindsight:8888
-      - HINDSIGHT_BANK_ID=sentinelai-local
+      - HINDSIGHT_BANK_ID=vision404-local
     env_file:
       - .env
     depends_on:
@@ -34,6 +34,18 @@ services:
     restart: unless-stopped
     # Note: to monitor the HOST machine the backend must run on host network
     # or use host.docker.internal for psutil. For development, run directly.
+
+  # ── Vision404 Frontend ───────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./vision404
+      dockerfile: Dockerfile
+    container_name: vision404-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
 
 volumes:
   hindsight_data:

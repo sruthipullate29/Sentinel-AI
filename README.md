@@ -1,90 +1,67 @@
-np# SentinelAI — Self-Learning System Reliability Agent
+# Vision404
 
-> **"SentinelAI doesn't just detect system problems. It remembers what caused them, learns what solved them, and uses that experience to prevent the next incident."**
+Vision404 is an AI-powered incident response agent that genuinely learns from past engineering incidents using Vectorize Hindsight™. It acts as a memory-powered reliability engineer that remembers what happened, what fixes were attempted, and what actual outcomes were achieved, so it can make better, evidence-backed decisions for future incidents.
 
-SentinelAI is an AI-powered system reliability agent that continuously monitors CPU, memory, disk, and application-level resource usage. Instead of merely displaying passive system statistics, SentinelAI learns how a user's system behaves over time and remembers previous resource incidents, their root causes, the human-approved remediation actions taken, and the verified outcomes using **Hindsight Episodic Memory**.
+## Problem and Target Users
+**Problem:** Site Reliability Engineers (SREs) and DevOps teams often repeat troubleshooting steps because past incident outcomes, especially failed attempts or partial fixes, are lost in ChatOps scrollback or closed tickets. When similar resource pressure or crashes happen again, the context of *what actually worked last time* is usually missing.
+**Target Users:** SREs, DevOps engineers, and system administrators.
 
----
+## Solution and Architecture
+Vision404 implements a complete Hindsight learning loop:
+- **Detection:** A background telemetry engine monitors for host resource anomalies (e.g. CPU spikes).
+- **Incident Persistence:** Incidents are durably saved to a local SQLite database, along with raw system context.
+- **Hindsight Recall:** The agent recalls similar past experiences from Hindsight using a natural-language description of the current symptoms.
+- **Evidence-Based Recommendation:** The agent recommends a remediation action (e.g., pausing a container), explicitly citing any recalled memory that informed its decision.
+- **Remediation & Verification:** Upon human approval, a Docker adapter safely executes the fix. The telemetry engine measures the actual resource delta to verify if the fix worked.
+- **Hindsight Retention:** The verified outcome (success or failure) is retained in Hindsight via a durable outbox, creating a new experience for future incidents to learn from.
 
-## 🔄 The Continuous Learning Loop
+## Technology Stack
+- **Backend:** Python, FastAPI, SQLite, Docker SDK, Hindsight Client SDK (`hindsight-client`).
+- **Frontend:** React, Vite, Lucide Icons.
+- **Memory Engine:** Hindsight by Vectorize (running via Docker container).
 
-```
-Monitor ──▶ Remember ──▶ Learn ──▶ Predict ──▶ Recommend ──▶ Act ──▶ Measure ──▶ Remember
-```
+## Hindsight's Specific Role
+Hindsight is not used as a generic RAG database or chat history. It is used strictly for **Episodic Memory**: storing and retrieving discrete incident experiences. The backend transforms each incident and its measured outcome into a semantic narrative and retains it. When a new incident occurs, Hindsight retrieves past narratives based on symptom similarity, allowing the agent to avoid repeating documented failures and prefer proven fixes.
 
-1. **Monitor**: Continuous kernel & process-level telemetry collection (CPU, Memory, NVMe I/O, Network, and per-process PID metrics).
-2. **Remember**: Queries Hindsight vector memory for historical incident fingerprints matching active symptom patterns.
-3. **Learn**: Synthesizes baseline application behavior and detects deviations (e.g., Docker container compile loops, Node.js heap bloating).
-4. **Predict**: Forecasts resource exhaustion **45–90 seconds before** host OS stability fails or processes freeze.
-5. **Recommend**: Synthesizes safe, non-destructive remediation with direct recall of previously successful human-approved actions.
-6. **Act**: Executes safe optimization commands in a non-destructive sandbox (user remains in complete control).
-7. **Measure**: Validates real-time before vs. after metric deltas (e.g., `-67% CPU`, `+4.2GB RAM freed`).
-8. **Remember**: Commits the verified outcome, human rating, and resolution fingerprint back to Hindsight Episodic Memory for future recall.
+## Setup and Configuration
 
----
+1. **Prerequisites:** Python 3.10+, Node.js 18+.
+2. **Hindsight Cloud (Recommended for Demo):**
+   Since running Docker locally might not be feasible during the presentation, you can use Vectorize Hindsight Cloud natively:
+   - Get a free API key at [ui.hindsight.vectorize.io](https://ui.hindsight.vectorize.io)
+   - Create a `.env` file in the root directory:
+   ```env
+   HINDSIGHT_API_URL=https://api.hindsight.vectorize.io
+   HINDSIGHT_API_KEY=sk-your-api-key-here
+   HINDSIGHT_BANK_ID=vision404-demo-bank
+   ```
+3. **Backend Setup:**
+   ```bash
+   cd backend
+   python -m venv venv
+   .\venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+5. **Frontend Setup:**
+   ```bash
+   cd vision404
+   npm install
+   ```
 
-## 🌍 Running Globally
+## Running the Application
+1. **Backend:** `cd backend && .\venv\Scripts\uvicorn.exe main:app --host 0.0.0.0 --port 8000`
+2. **Frontend:** `cd vision404 && npm run dev`
+   Navigate to `http://localhost:5173`.
 
-### 1. Run from Any Terminal Anywhere (Global CLI Command)
-SentinelAI has been linked globally to your system PATH. You can open any terminal (PowerShell, CMD, bash) from **any folder** and run:
+## Database and Persistence
+The application uses SQLite (`backend/incidents.db`) as the authoritative source of truth for incident history, remediation attempts, and pending memory outbox jobs. Hindsight acts purely as the semantic memory and recall layer. If Hindsight is offline, the app degrades gracefully, still persisting incidents locally and queueing memory retention jobs in the outbox to retry later.
 
+## Running Tests
 ```bash
-sentinel-ai
-# or simply
-sentinel
+cd backend
+python -m pytest tests/test_vision404.py -v
 ```
 
-This will automatically boot up the SentinelAI agent on `0.0.0.0` and open your default browser.
-
-### 2. Network & LAN Global Access
-The server binds to `0.0.0.0`, making it accessible across your entire local network (Wi-Fi, LAN, or other workstations):
-
-- **Local Machine**: [http://localhost:5173](http://localhost:5173)
-- **Local Network (LAN / Mobile / Other Machines)**: `http://192.168.0.11:5173`
-
-### 3. Running from Workspace Directory
-```bash
-cd sentinel-ai
-npm run dev
-```
-
----
-
-## 🐳 Running with Docker
-
-SentinelAI is fully containerized with Vectorize Hindsight local memory engine and SentinelAI backend:
-
-### Option A: Using Docker Compose (Hindsight + Backend)
-From the root workspace directory:
-```bash
-# Build and run Hindsight and SentinelAI Backend in background
-docker compose up -d
-
-# Check service container status
-docker compose ps
-
-# View live container logs
-docker compose logs -f
-
-# Stop containers
-docker compose down
-```
-
-Once running:
-- **Vectorize Hindsight Memory Engine**: [http://localhost:8888](http://localhost:8888)
-- **SentinelAI Backend API**: [http://localhost:8000](http://localhost:8000)
-
-### Option B: Frontend Dashboard Container
-```bash
-cd sentinel-ai
-
-# Build the production image
-docker build -t sentinel-ai .
-
-# Run container mapped to port 5173
-docker run -d -p 5173:80 --name sentinel-ai-agent sentinel-ai
-```
-
-Once running, access SentinelAI Dashboard at **[http://localhost:5173](http://localhost:5173)**.
-
-
+## Known Limitations
+- The remediation adapter only supports a safe allowlist of Docker actions (`pause_container`, `unpause_container`, `stop_container`).
+- The anomaly detector uses simple static thresholds rather than dynamic baselines.
